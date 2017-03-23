@@ -1,0 +1,244 @@
+package com.reharu.ikaros.haru.cortana;
+
+import com.orange.entity.layer.Layer;
+import com.orange.entity.scene.Scene;
+import com.orange.entity.sprite.AnimatedSprite;
+import com.orange.entity.text.Text;
+import com.orange.entity.text.TextOptions;
+import com.orange.input.touch.TouchEvent;
+import com.orange.util.HorizontalAlign;
+import com.reharu.harubase.tools.HLog;
+import com.reharu.harubase.tools.OKHttpTool;
+import com.reharu.harubase.tools.ScreenTool;
+import com.reharu.ikaros.haru.activities.HCortanaActivity;
+import com.reharu.ikaros.haru.cortana.behavior.Feeling;
+import com.reharu.ikaros.haru.cortana.dto.SpeackContent;
+import com.reharu.ikaros.haru.cortana.listener.CortanaListener;
+import com.reharu.ikaros.haru.tuling.service.TulingService;
+import com.reharu.ikaros.haru.tuling.vo.TulingResp;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Call;
+
+/**
+ * Created by hoshino on 2017/3/18.
+ */
+
+public class Cortana extends Layer {
+
+    //每一帧动画持续时间
+    private long eachDuration = 30;
+
+    private AnimatedSprite curAnima;
+
+    private AnimatedSprite preAnima;
+
+    private String curAnimaName ;
+
+    private CortanaAnimeListener animateListener = new CortanaAnimeListener();
+
+    private float lowestLocY = 0;
+
+    //显示话语
+    private Text wordsDiplayer ;
+
+    private List<CortanaListener> cortanaListenerList = new ArrayList<>();
+
+
+    private Feeling feeling ;
+
+    private TulingRespHandler tulingRespHandler ;
+
+    private CortanaAnimResManager animResManager ;
+
+    public Cortana(Scene pScene) {
+        super(pScene);
+        this.animResManager = new CortanaAnimResManager(this) ;
+        this.addCortanaListener(new CortanaFeelingController(animResManager));
+        this.setIgnoreTouch(false);
+        this.setHeight(ScreenTool.getScreenSize().heightPixels/2);
+        tulingRespHandler = new TulingRespHandler(this) ;
+        init(animResManager.getAllAnimations());
+    }
+
+    public void init(List<Animation> animationList) {
+        for (Animation animation : animationList) {
+            initAnimation(animation);
+        }
+    }
+
+    private void initFont() {
+        try{
+            wordsDiplayer = new Text(0, lowestLocY, HCortanaActivity.getBitmapFont(),"今天天气是阴天东风3-4级!",new TextOptions(HorizontalAlign.CENTER),getVertexBufferObjectManager());
+            wordsDiplayer.setX((ScreenTool.getScreenSize().widthPixels-wordsDiplayer.getWidth())/2);
+            this.attachChild(wordsDiplayer, 0);
+        }catch (Exception e){
+            HLog.ex("TAG", e);
+        }
+    }
+    //初始化小娜
+    private void initAnimation(Animation animation) {
+        //添加动画
+        AnimatedSprite animatedSprite = animation.getAnimatedSprite() ;
+        if(animatedSprite == null){
+            return;
+        }
+        animatedSprite.setX((ScreenTool.getScreenSize().widthPixels - animatedSprite.getWidth()) / 2 + animation.getOffsetX());
+        animatedSprite.setY((ScreenTool.getScreenSize().heightPixels /2- animatedSprite.getHeight()) + animation.getOffsetY());
+        float y = animatedSprite.getBottomY() ;
+        lowestLocY =  y > lowestLocY ? y : lowestLocY;
+        animatedSprite.setVisible(false);
+        this.attachChild(animatedSprite, 0);
+    }
+
+    //小娜动画
+    public void cortanaAnimate(Animation animation, boolean isLoop){
+        this.cortanaAnimate(animation, isLoop, null);
+    }
+    public void cortanaAnimate(Animation animation, boolean isLoop, CortanaAnimeListener.RealListener realListener) {
+        preAnima = curAnima ;
+        if(preAnima != null){
+            //让之前的动画不显示
+            preAnima.setVisible(false);
+        }
+        //获取动画
+        curAnima = animation.getAnimatedSprite() ;
+        curAnimaName = animation.getName() ;
+        if (curAnima != null) {
+            //展示动画
+            curAnima.setVisible(true);
+            if(realListener != null){
+                animateListener.addRealListener(realListener);
+            }
+            curAnima.animate(eachDuration, isLoop, animateListener);
+        }
+    }
+
+    public void nextCortanaAnimate(Animation animation, boolean isLoop){
+        this.nextCortanaAnimate(animation, isLoop, null);
+    }
+    public void nextCortanaAnimate(final Animation animation, final boolean isLoop, CortanaAnimeListener.RealListener realListener) {
+        //当前动画不在播放的话立刻播放下一动画
+        if (curAnima.isAnimationRunning()) {
+            //添加监听
+                this.addCortanaAnimeListener(new CortanaAnimeListener.RealListener(curAnima, curAnimaName) {
+                    @Override
+                    public void onAnimationFinished(AnimatedSprite animatedSprite) {
+                        //动画结束后判断是是否显示动画
+                        if (animatedSprite == this.curAnim) {
+                            cortanaAnimate(animation, isLoop);
+                        }
+                            //删除监听节省内存
+                            removeCortanaAnimeListener(this);
+                    }
+                });
+            if(realListener != null){
+                addCortanaAnimeListener(realListener);
+            }
+        } else {
+            this.cortanaAnimate(animation, isLoop);
+        }
+    }
+
+    public void addCortanaAnimeListener(CortanaAnimeListener.RealListener realListener) {
+        this.animateListener.addRealListener(realListener);
+    }
+
+    public void removeCortanaAnimeListener(CortanaAnimeListener.RealListener realListener) {
+        this.animateListener.removeRealListener(realListener);
+    }
+
+    @Override
+    public boolean onTouch(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+        if (curAnima != null && curAnima.contains(pTouchAreaLocalX, pTouchAreaLocalY)) {
+            if(!isIgnoreTouch()){
+                this.respOnTouch();
+            }
+        }
+        return super.onTouch(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+    }
+
+    //响应触摸
+    private void respOnTouch() {
+        changeFeeling(Feeling.HAPPY);
+        onTouch();
+    }
+
+    private void onTouch() {
+        for(CortanaListener listener : cortanaListenerList){
+            listener.onTouch(this);
+        }
+    }
+
+    public void welcome() {
+        cortanaAnimate(animResManager.getApperaAnimation(), false);
+        changeFeeling(Feeling.NORMAL);
+    }
+
+
+
+    void speak(String content){
+        for(CortanaListener cortanaListener : cortanaListenerList) {
+                cortanaListener.onSpeack(this, content);
+        }
+    }
+
+    public void onApperance(){
+        this.welcome();
+        for(CortanaListener cortanaListener : cortanaListenerList) {
+            cortanaListener.onApperance(this);
+        }
+    }
+
+    public void addCortanaListener(CortanaListener cortanaListener) {
+        this.cortanaListenerList.add(cortanaListener) ;
+    }
+
+    public void removeCortanaListener(CortanaListener cortanaListener){
+        this.cortanaListenerList.remove(cortanaListener) ;
+    }
+
+    //从外部接受到信息
+    public void getMsg(CharSequence msg){
+        TulingService.get().queryTuling(msg.toString(), new OKHttpTool.HCallBack<TulingResp>() {
+            @Override
+            public void onResponse(Call call, TulingResp tulingResp) {
+                tulingRespHandler.handleTulingResp(tulingResp);
+            }
+
+            @Override
+            public void onFail(Call call, Exception e) {
+                onError("发生了未知错误:"+e.getMessage());
+                HLog.ex("TAG", e);
+            }
+        });
+    }
+    public void speak(SpeackContent content){
+        if(content != null){
+            this.changeFeeling(content.feeling);
+            this.speak(content.content);
+        }
+    }
+    void onError(String msg){
+        changeFeeling(Feeling.SAD);
+        speak(msg);
+    }
+
+    void changeFeeling(Feeling feeling){
+        if(this.feeling == feeling){
+            onFeelingChanged(feeling, false);
+        }else {
+            this.feeling = feeling ;
+            onFeelingChanged(feeling, true);
+        }
+    }
+
+    private void onFeelingChanged(Feeling feeling, boolean changed){
+        for(CortanaListener cortanaListener : cortanaListenerList){
+            cortanaListener.onFeelingChanged(this, feeling, changed);
+        }
+    }
+
+}
