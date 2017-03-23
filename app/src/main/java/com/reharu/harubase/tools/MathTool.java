@@ -87,4 +87,11 @@ public class MathTool {
         }
         return max ;
     }
+
+    public static int randomInt(int scope){
+        if(random == null){
+            random = new Random() ;
+        }
+        return random.nextInt(scope) ;
+    }
 }

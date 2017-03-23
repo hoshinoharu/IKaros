@@ -19,8 +19,8 @@ public class AnimeTool {
         void dismissOverLay();
     }
 
-    public static ObjectAnimator showAnime(final View view) {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationX", -view.getMeasuredWidth() * 0.1f, 0);
+    public static ObjectAnimator showAnime(final View view, boolean fromLeft) {
+        ObjectAnimator animator = ObjectAnimator.ofFloat(view, "translationX", (fromLeft?-1:1)*view.getMeasuredWidth() * 0.1f, 0);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {

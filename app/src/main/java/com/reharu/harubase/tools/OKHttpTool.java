@@ -17,11 +17,13 @@ import okhttp3.Response;
  */
 
 public class OKHttpTool {
+
     public static abstract class HCallBack<Result> implements Callback{
         @Override
-        public final void onResponse(Call call, Response response) throws IOException {
+        public void onResponse(Call call, Response response) throws IOException {
             try {
                 String json = response.body().string() ;
+                HLog.e("TAG", json);
                 Type type = ReflectTool.getGenericType(getClass()) ;
                 Result r = Constant.GSON.fromJson(json,type) ;
                 onResponse(call, r);

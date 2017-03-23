@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture version="1" file="appera_0.pvr.ccz" type="pvrccz" width="1682" height="2402" pixelformat="RGBA_8888" minfilter="linear" magfilter="linear" wrapt="clamp" wraps="clamp" premultiplyalpha="false">
+    <!-- Created with TexturePacker http://texturepacker.com -->
+    <!-- $TexturePacker:SmartUpdate:966a163dbf8a869fb8e4692bcaed36c0$ -->
+    <textureregion id="0" src="appera_0_01.jpg" x="1346" y="2102" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="1" src="appera_0_02.JPG" x="1010" y="2102" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="2" src="appera_0_03.JPG" x="674" y="2102" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="3" src="appera_0_04.JPG" x="338" y="2102" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="4" src="appera_0_05.JPG" x="2" y="2102" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="5" src="appera_0_06.JPG" x="1346" y="1802" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="6" src="appera_0_07.JPG" x="1010" y="1802" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="7" src="appera_0_08.JPG" x="674" y="1802" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="8" src="appera_0_09.JPG" x="338" y="1802" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="9" src="appera_0_10.JPG" x="2" y="1802" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="10" src="appera_0_11.JPG" x="1346" y="1502" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="11" src="appera_0_12.JPG" x="1010" y="1502" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="12" src="appera_0_13.JPG" x="674" y="1502" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="13" src="appera_0_14.JPG" x="338" y="1502" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="14" src="appera_0_15.JPG" x="2" y="1502" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="15" src="appera_0_16.JPG" x="1346" y="1202" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="16" src="appera_0_17.JPG" x="1010" y="1202" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="17" src="appera_0_18.JPG" x="674" y="1202" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="18" src="appera_0_19.JPG" x="338" y="1202" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="19" src="appera_0_20.JPG" x="2" y="1202" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="20" src="appera_0_21.JPG" x="1346" y="902" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="21" src="appera_0_22.JPG" x="1010" y="902" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="22" src="appera_0_23.JPG" x="674" y="902" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="23" src="appera_0_24.JPG" x="338" y="902" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="24" src="appera_0_25.JPG" x="2" y="902" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="25" src="appera_0_26.JPG" x="1346" y="602" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="26" src="appera_0_27.JPG" x="1010" y="602" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="27" src="appera_0_28.JPG" x="674" y="602" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="28" src="appera_0_29.JPG" x="338" y="602" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="29" src="appera_0_30.JPG" x="2" y="602" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="30" src="appera_0_31.JPG" x="1346" y="302" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="31" src="appera_0_32.JPG" x="1010" y="302" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="32" src="appera_0_33.JPG" x="674" y="302" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="33" src="appera_0_34.JPG" x="338" y="302" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="34" src="appera_0_35.JPG" x="2" y="302" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="35" src="appera_0_36.JPG" x="1346" y="2" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="36" src="appera_0_37.JPG" x="1010" y="2" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="37" src="appera_0_38.JPG" x="674" y="2" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="38" src="appera_0_39.JPG" x="338" y="2" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+    <textureregion id="39" src="appera_0_40.JPG" x="2" y="2" width="334" height="298" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="334" srcheight="298"/>
+</texture>

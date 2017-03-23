@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture version="1" file="normal_blink.pvr.ccz" type="pvrccz" width="1906" height="992" pixelformat="RGBA_8888" minfilter="linear" magfilter="linear" wrapt="clamp" wraps="clamp" premultiplyalpha="false">
+    <!-- Created with TexturePacker http://texturepacker.com -->
+    <!-- $TexturePacker:SmartUpdate:7e895ca43cd04789365c1acbcda31a9c$ -->
+    <textureregion id="0" src="normal_blink_01.png" x="1668" y="794" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="1" src="normal_blink_02.png" x="1430" y="794" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="2" src="normal_blink_03.png" x="1192" y="794" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="3" src="normal_blink_04.png" x="954" y="794" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="4" src="normal_blink_05.png" x="716" y="794" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="5" src="normal_blink_06.png" x="478" y="794" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="6" src="normal_blink_07.png" x="240" y="794" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="7" src="normal_blink_08.png" x="2" y="794" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="8" src="normal_blink_09.png" x="1668" y="596" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="9" src="normal_blink_10.png" x="1430" y="596" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="10" src="normal_blink_11.png" x="1192" y="596" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="11" src="normal_blink_12.png" x="954" y="596" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="12" src="normal_blink_13.png" x="716" y="596" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="13" src="normal_blink_14.png" x="478" y="596" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="14" src="normal_blink_15.png" x="240" y="596" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="15" src="normal_blink_16.png" x="2" y="596" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="16" src="normal_blink_17.png" x="1668" y="398" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="17" src="normal_blink_18.png" x="1430" y="398" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="18" src="normal_blink_19.png" x="1192" y="398" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="19" src="normal_blink_20.png" x="954" y="398" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="20" src="normal_blink_21.png" x="716" y="398" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="21" src="normal_blink_22.png" x="478" y="398" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="22" src="normal_blink_23.png" x="240" y="398" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="23" src="normal_blink_24.png" x="2" y="398" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="24" src="normal_blink_25.png" x="1668" y="200" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="25" src="normal_blink_26.png" x="1430" y="200" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="26" src="normal_blink_27.png" x="1192" y="200" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="27" src="normal_blink_28.png" x="954" y="200" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="28" src="normal_blink_29.png" x="716" y="200" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="29" src="normal_blink_30.png" x="478" y="200" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="30" src="normal_blink_31.png" x="240" y="200" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="31" src="normal_blink_32.png" x="2" y="200" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="32" src="normal_blink_33.png" x="1668" y="2" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="33" src="normal_blink_34.png" x="1430" y="2" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="34" src="normal_blink_35.png" x="1192" y="2" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="35" src="normal_blink_36.png" x="954" y="2" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="36" src="normal_blink_37.png" x="716" y="2" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="37" src="normal_blink_38.png" x="478" y="2" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="38" src="normal_blink_39.png" x="240" y="2" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+    <textureregion id="39" src="normal_blink_40.png" x="2" y="2" width="236" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="236" srcheight="196"/>
+</texture>

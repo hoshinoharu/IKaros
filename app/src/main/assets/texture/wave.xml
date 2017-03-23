@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture version="1" file="wave.pvr.ccz" type="pvrccz" width="512" height="512" pixelformat="RGBA_8888" minfilter="linear" magfilter="linear" wrapt="clamp" wraps="clamp" premultiplyalpha="false">
+    <!-- Created with TexturePacker http://texturepacker.com -->
+    <!-- $TexturePacker:SmartUpdate:12d83c2e9a8ee52ab6ccf38d808c0940$ -->
+    <textureregion id="0" src="wave.png" x="2" y="2" width="441" height="456" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="441" srcheight="456"/>
+</texture>

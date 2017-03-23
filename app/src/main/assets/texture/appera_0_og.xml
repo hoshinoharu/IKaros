@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AnimationCfg>
+  <SkinData>
+    <Skin Name="appera_0" Type="FrameSkin" RotationCenterX="167" RotationCenterY="-149" ScaleCenterX="167" ScaleCenterY="-149">
+      <SkinFrame Index="0" Image="appera_0_01.png" Duration="1" />
+      <SkinFrame Index="1" Image="appera_0_02.png" Duration="1" />
+      <SkinFrame Index="2" Image="appera_0_03.png" Duration="1" />
+      <SkinFrame Index="3" Image="appera_0_04.png" Duration="1" />
+      <SkinFrame Index="4" Image="appera_0_05.png" Duration="1" />
+      <SkinFrame Index="5" Image="appera_0_06.png" Duration="1" />
+      <SkinFrame Index="6" Image="appera_0_07.png" Duration="1" />
+      <SkinFrame Index="7" Image="appera_0_08.png" Duration="1" />
+      <SkinFrame Index="8" Image="appera_0_09.png" Duration="1" />
+      <SkinFrame Index="9" Image="appera_0_10.png" Duration="1" />
+      <SkinFrame Index="10" Image="appera_0_11.png" Duration="1" />
+      <SkinFrame Index="11" Image="appera_0_12.png" Duration="1" />
+      <SkinFrame Index="12" Image="appera_0_13.png" Duration="1" />
+      <SkinFrame Index="13" Image="appera_0_14.png" Duration="1" />
+      <SkinFrame Index="14" Image="appera_0_15.png" Duration="1" />
+      <SkinFrame Index="15" Image="appera_0_16.png" Duration="1" />
+      <SkinFrame Index="16" Image="appera_0_17.png" Duration="1" />
+      <SkinFrame Index="17" Image="appera_0_18.png" Duration="1" />
+      <SkinFrame Index="18" Image="appera_0_19.png" Duration="1" />
+      <SkinFrame Index="19" Image="appera_0_20.png" Duration="1" />
+      <SkinFrame Index="20" Image="appera_0_21.png" Duration="1" />
+      <SkinFrame Index="21" Image="appera_0_22.png" Duration="1" />
+      <SkinFrame Index="22" Image="appera_0_23.png" Duration="1" />
+      <SkinFrame Index="23" Image="appera_0_24.png" Duration="1" />
+      <SkinFrame Index="24" Image="appera_0_25.png" Duration="1" />
+      <SkinFrame Index="25" Image="appera_0_26.png" Duration="1" />
+      <SkinFrame Index="26" Image="appera_0_27.png" Duration="1" />
+      <SkinFrame Index="27" Image="appera_0_28.png" Duration="1" />
+      <SkinFrame Index="28" Image="appera_0_29.png" Duration="1" />
+      <SkinFrame Index="29" Image="appera_0_30.png" Duration="1" />
+      <SkinFrame Index="30" Image="appera_0_31.png" Duration="1" />
+      <SkinFrame Index="31" Image="appera_0_32.png" Duration="1" />
+      <SkinFrame Index="32" Image="appera_0_33.png" Duration="1" />
+      <SkinFrame Index="33" Image="appera_0_34.png" Duration="1" />
+      <SkinFrame Index="34" Image="appera_0_35.png" Duration="1" />
+      <SkinFrame Index="35" Image="appera_0_36.png" Duration="1" />
+      <SkinFrame Index="36" Image="appera_0_37.png" Duration="1" />
+      <SkinFrame Index="37" Image="appera_0_38.png" Duration="1" />
+      <SkinFrame Index="38" Image="appera_0_39.png" Duration="1" />
+      <SkinFrame Index="39" Image="appera_0_40.png" Duration="1" />
+    </Skin>
+  </SkinData>
+  <LayerData>
+    <Layer Name="appera_0" SkinName="appera_0" />
+  </LayerData>
+  <AnimationData>
+    <Animation Name="animation_1" LocationX="0" Locationy="0">
+      <FrameData Layer="appera_0" StartIndex="0" EndIndex="39" LocationX="0" LocationY="0">
+        <Frame Index="0" ScaleX="1" ScaleY="1" RotationX="0" RotationY="0" Rotation="0" LocationX="0" LocationY="0" />
+        <Frame Index="39" ScaleX="1" ScaleY="1" RotationX="0" RotationY="0" Rotation="0" LocationX="0" LocationY="0" />
+      </FrameData>
+    </Animation>
+  </AnimationData>
+</AnimationCfg>

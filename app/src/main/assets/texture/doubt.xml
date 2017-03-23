@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture version="1" file="doubt.pvr.ccz" type="pvrccz" width="1024" height="2048" pixelformat="RGBA_8888" minfilter="linear" magfilter="linear" wrapt="clamp" wraps="clamp" premultiplyalpha="false">
+    <!-- Created with TexturePacker http://texturepacker.com -->
+    <!-- $TexturePacker:SmartUpdate:4d9d2e69f4dc161a70fa87e134eb3581$ -->
+    <textureregion id="0" src="doubt_01.png" x="728" y="1784" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="1" src="doubt_02.png" x="486" y="1784" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="2" src="doubt_03.png" x="244" y="1784" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="3" src="doubt_04.png" x="2" y="1784" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="4" src="doubt_05.png" x="728" y="1586" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="5" src="doubt_06.png" x="486" y="1586" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="6" src="doubt_07.png" x="244" y="1586" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="7" src="doubt_08.png" x="2" y="1586" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="8" src="doubt_09.png" x="728" y="1388" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="9" src="doubt_10.png" x="486" y="1388" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="10" src="doubt_11.png" x="244" y="1388" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="11" src="doubt_12.png" x="2" y="1388" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="12" src="doubt_13.png" x="728" y="1190" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="13" src="doubt_14.png" x="486" y="1190" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="14" src="doubt_15.png" x="244" y="1190" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="15" src="doubt_16.png" x="2" y="1190" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="16" src="doubt_17.png" x="728" y="992" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="17" src="doubt_18.png" x="486" y="992" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="18" src="doubt_19.png" x="244" y="992" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="19" src="doubt_20.png" x="2" y="992" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="20" src="doubt_21.png" x="728" y="794" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="21" src="doubt_22.png" x="486" y="794" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="22" src="doubt_23.png" x="244" y="794" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="23" src="doubt_24.png" x="2" y="794" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="24" src="doubt_25.png" x="728" y="596" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="25" src="doubt_26.png" x="486" y="596" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="26" src="doubt_27.png" x="244" y="596" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="27" src="doubt_28.png" x="2" y="596" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="28" src="doubt_29.png" x="728" y="398" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="29" src="doubt_30.png" x="486" y="398" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="30" src="doubt_31.png" x="244" y="398" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="31" src="doubt_32.png" x="2" y="398" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="32" src="doubt_33.png" x="728" y="200" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="33" src="doubt_34.png" x="486" y="200" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="34" src="doubt_35.png" x="244" y="200" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="35" src="doubt_36.png" x="2" y="200" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="36" src="doubt_37.png" x="728" y="2" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="37" src="doubt_38.png" x="486" y="2" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="38" src="doubt_39.png" x="244" y="2" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+    <textureregion id="39" src="doubt_40.png" x="2" y="2" width="240" height="196" rotated="false" trimmed="false" srcx="0" srcy="0" srcwidth="240" srcheight="196"/>
+</texture>

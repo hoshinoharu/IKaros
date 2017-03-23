@@ -9,7 +9,8 @@ import android.widget.TextView;
 import com.reharu.harubase.base.HaruApp;
 
 import java.lang.reflect.Field;
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -107,5 +108,14 @@ public class ViewTool {
             return  "" ;
         }
         return textView.getText().toString().trim() ;
+    }
+
+    public static List<View> getAllChild(ViewGroup viewGroup){
+        List<View> allChilds = new ArrayList<>() ;
+        int index  ;
+        for(index = 0; index < viewGroup.getChildCount(); index++ ){
+            allChilds.add(viewGroup.getChildAt(index)) ;
+        }
+        return allChilds ;
     }
 }

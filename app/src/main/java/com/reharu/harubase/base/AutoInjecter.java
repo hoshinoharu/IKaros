@@ -40,7 +40,11 @@ public class AutoInjecter {
                         int id = inject.value();
                         if (id > 0) {
                             field.setAccessible(true);
-                            field.set(autoInjectable, autoInjectable.findInjectViewById(id));//给我们要找的字段设置值
+                            Object val = null ;
+                                val = autoInjectable.findInjectViewById(id) ;
+                            if(val != null){
+                                field.set(autoInjectable, val);
+                            }
                         }
                     }
                 }catch (Exception e){

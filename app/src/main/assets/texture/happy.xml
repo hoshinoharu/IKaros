@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<texture version="1" file="happy.pvr.ccz" type="pvrccz" width="1767" height="2034" pixelformat="RGBA_8888" minfilter="linear" magfilter="linear" wrapt="clamp" wraps="clamp" premultiplyalpha="false">
+    <!-- Created with TexturePacker http://texturepacker.com -->
+    <!-- $TexturePacker:SmartUpdate:c9c4a54614e59e0abb34ec698b8ae428$ -->
+    <textureregion id="0" src="happy_01.png" x="1414" y="1780" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="1" src="happy_02.png" x="1061" y="1780" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="2" src="happy_03.png" x="708" y="1780" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="3" src="happy_04.png" x="355" y="1780" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="4" src="happy_05.png" x="2" y="1780" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="5" src="happy_06.png" x="1414" y="1526" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="6" src="happy_07.png" x="1061" y="1526" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="7" src="happy_08.png" x="708" y="1526" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="8" src="happy_09.png" x="355" y="1526" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="9" src="happy_10.png" x="2" y="1526" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="10" src="happy_11.png" x="1414" y="1272" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="11" src="happy_12.png" x="1061" y="1272" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="12" src="happy_13.png" x="708" y="1272" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="13" src="happy_14.png" x="355" y="1272" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="14" src="happy_15.png" x="2" y="1272" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="15" src="happy_16.png" x="1414" y="1018" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="16" src="happy_17.png" x="1061" y="1018" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="17" src="happy_18.png" x="708" y="1018" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="18" src="happy_19.png" x="355" y="1018" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="19" src="happy_20.png" x="2" y="1018" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="20" src="happy_21.png" x="1414" y="764" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="21" src="happy_22.png" x="1061" y="764" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="22" src="happy_23.png" x="708" y="764" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="23" src="happy_24.png" x="355" y="764" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="24" src="happy_25.png" x="2" y="764" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="25" src="happy_26.png" x="1414" y="510" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="26" src="happy_27.png" x="1061" y="510" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="27" src="happy_28.png" x="708" y="510" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="28" src="happy_29.png" x="355" y="510" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="29" src="happy_30.png" x="2" y="510" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="30" src="happy_31.png" x="1414" y="256" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="31" src="happy_32.png" x="1061" y="256" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="32" src="happy_33.png" x="708" y="256" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="33" src="happy_34.png" x="355" y="256" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="34" src="happy_35.png" x="2" y="256" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="35" src="happy_36.png" x="1414" y="2" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="36" src="happy_37.png" x="1061" y="2" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="37" src="happy_38.png" x="708" y="2" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="38" src="happy_39.png" x="355" y="2" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+    <textureregion id="39" src="happy_40.png" x="2" y="2" width="252" height="351" rotated="true" trimmed="false" srcx="0" srcy="0" srcwidth="252" srcheight="351"/>
+</texture>
