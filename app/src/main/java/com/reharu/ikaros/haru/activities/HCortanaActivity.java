@@ -54,6 +54,8 @@ import com.reharu.ikaros.haru.tools.Location;
 import com.reharu.ikaros.haru.tools.LocationGetter;
 import com.reharu.ikaros.haru.weather.service.WeatherService;
 import com.reharu.ikaros.haru.weather.vo.Weather;
+import com.reharu.ikaros.imxz.activity.TrainActivity;
+import com.reharu.ikaros.lingmar.QueryHotelActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -175,12 +177,12 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     private void initIcon() {
         int topMaxIcon = 4 ;
         List<OpIcon> iconList = Arrays.asList(
-                    new OpIcon(R.drawable.ic_alarm, "准点提醒"),
-                    new OpIcon(R.drawable.ic_hotel, "酒店住宿"),
-                    new OpIcon(R.drawable.ic_plane, "机票车票"),
-                    new OpIcon(R.drawable.ic_loc, "地理位置"),
-                    new OpIcon(R.drawable.ic_weather, "天气预报"),
-                    new OpIcon(R.drawable.ic_shopping, "购物剁手")
+                    new OpIcon(R.drawable.ic_alarm, "准点提醒", null),
+                    new OpIcon(R.drawable.ic_hotel, "酒店住宿", QueryHotelActivity.class),
+                    new OpIcon(R.drawable.ic_plane, "机票车票", TrainActivity.class),
+                    new OpIcon(R.drawable.ic_loc, "地理位置", null),
+                    new OpIcon(R.drawable.ic_weather, "天气预报", null),
+                    new OpIcon(R.drawable.ic_shopping, "购物剁手", null)
                 );
         List<OpIcon> topList  =iconList.subList(0, topMaxIcon) ;
         if(iconList.size() > 4){
@@ -190,12 +192,12 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
             List<OpIcon> leftList = iconList.subList(topMaxIcon, topMaxIcon+leftIcon) ;
             List<OpIcon> rightList = iconList.subList(topMaxIcon+leftIcon, iconList.size()) ;
             if(rightList.size() > 0){
-                OpIconAdapter rightAdapter = new OpIconAdapter(rightList);
+                OpIconAdapter rightAdapter = new OpIconAdapter(rightList, this);
                 rightGrid.setAdapter(rightAdapter);
             }
-            leftGrid.setAdapter(new OpIconAdapter(leftList));
+            leftGrid.setAdapter(new OpIconAdapter(leftList, this));
         }
-        topGrid.setAdapter(new OpIconAdapter(topList));
+        topGrid.setAdapter(new OpIconAdapter(topList, this));
         topGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));
         leftGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));
         rightGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));

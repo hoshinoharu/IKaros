@@ -45,5 +45,10 @@ dependencies {
     compile 'net.wujingchao.android.view:simple-tag-imageview:1.0.1'
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     compile 'com.github.satyan:sugar:1.5'
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
     testCompile 'junit:junit:4.12'
+
+
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
+    compile 'com.gjiazhe:wavesidebar:1.2'
 }

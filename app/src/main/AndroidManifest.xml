@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.reharu.ikaros">
-
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- 这个权限用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 这个权限用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
@@ -28,13 +27,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:largeHeap="true"
-        >
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="aDX2u4zYtQ1OByTszPINkeClVCVnBhAv" />
-        <activity android:name=".haru.activities.HCortanaActivity"
+
+        <activity android:name="com.reharu.ikaros.haru.activities.HCortanaActivity"
             android:windowSoftInputMode="adjustNothing"
             >
             <intent-filter>
@@ -42,14 +40,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.reharu.ikaros.MainActivity" />
         <activity
-            android:name=".haru.demo.Demo"
-            android:label="@string/title_activity_demo"
+            android:name="com.reharu.ikaros.lingmar.QueryHotelActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name="com.reharu.ikaros.imxz.activity.TrainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainActivity"
-            ></activity>
+            android:name="com.reharu.ikaros.lingmar.HotelActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.reharu.ikaros.lingmar.HotelCommentActivity"></activity>
+        <activity
+            android:name="com.reharu.ikaros.imxz.activity.CalendarActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name="com.reharu.ikaros.imxz.activity.ChoosePlaceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
         </service>
     </application>
+
 </manifest>

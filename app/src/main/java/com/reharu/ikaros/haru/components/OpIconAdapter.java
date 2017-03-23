@@ -2,7 +2,10 @@ package com.reharu.ikaros.haru.components;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -36,8 +39,11 @@ public class OpIconAdapter extends BaseAdapter {
 
     private List<OpIcon> opIconList ;
 
-    public OpIconAdapter(List<OpIcon> opIconList) {
+    private Activity owner ;
+
+    public OpIconAdapter(List<OpIcon> opIconList, Activity owner) {
         this.opIconList = opIconList;
+        this.owner = owner;
     }
 
     @Override
@@ -57,7 +63,7 @@ public class OpIconAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        OpIcon opIcon = opIconList.get(position) ;
+        final OpIcon opIcon = opIconList.get(position) ;
         if(convertView == null){
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_icon, parent, false) ;
             ViewHolder viewHolder = new ViewHolder(convertView) ;
@@ -71,14 +77,21 @@ public class OpIconAdapter extends BaseAdapter {
                 }
              });
             convertView.setTag(viewHolder);
-                viewHolder.getContent().setOnClickListener(new View.OnClickListener() {
+                viewHolder.getContent().setOnTouchListener(new View.OnTouchListener() {
                     @Override
-                    public void onClick(View v) {
+                    public boolean onTouch(View v, MotionEvent event) {
                         animator.start();
+                        return false;
                     }
                 });
         }
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
+        viewHolder.getContent().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                owner.startActivity(new Intent(owner, opIcon.acCls));
+            }
+        });
         viewHolder.icon.setImageResource(opIcon.imgId);
         viewHolder.desc.setText(opIcon.desc);
         return convertView;

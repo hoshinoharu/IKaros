@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/tv_hotel_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="安徽省蚌埠市蚌山区万达广场公寓A座位1504室"
+        android:textColor="#000"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/calendar" />
+
+        <View
+            android:id="@+id/view1"
+            android:layout_width="1dip"
+            android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_toRightOf="@+id/iv_queryCity"
+            android:background="#EEEFFF" />
+
+        <TextView
+            android:id="@+id/tv_checkin_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="3月21日-3月22日" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#aaa" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="房间列表" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#aaa" />
+
+    <com.reharu.ikaros.lingmar.view.ListViewinNestScrollView
+        android:id="@+id/listview_room_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none"
+        ></com.reharu.ikaros.lingmar.view.ListViewinNestScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_hotel_room_function"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon
+            xmlns:IKaros="http://schemas.android.com/apk/res/com.reharu.ikaros"
+            android:id="@+id/shs_park"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            IKaros:desicon="@mipmap/park"
+            IKaros:desname="停车场"></com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon>
+
+        <com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon xmlns:IKaros="http://schemas.android.com/apk/res/com.reharu.ikaros"
+            android:id="@+id/shs_wifi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            IKaros:desicon="@mipmap/wifi"
+            IKaros:desname="无线wifi"></com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon>
+
+        <com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon xmlns:IKaros="http://schemas.android.com/apk/res/com.reharu.ikaros"
+            android:id="@+id/shs_restaurant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            IKaros:desicon="@mipmap/restaurant"
+            IKaros:desname="餐厅"></com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon>
+
+        <com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon xmlns:IKaros="http://schemas.android.com/apk/res/com.reharu.ikaros"
+            android:id="@+id/shs_shower"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            IKaros:desicon="@mipmap/shower"
+            IKaros:desname="热水"></com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="用户评价" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#aaa" />
+
+    /*住客评论区*/
+
+    <com.reharu.ikaros.lingmar.view.ListViewinNestScrollView
+        android:id="@+id/listview_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.reharu.ikaros.lingmar.view.ListViewinNestScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:onClick="showMoreComment"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="查看全部" />
+    </LinearLayout>
+</LinearLayout>

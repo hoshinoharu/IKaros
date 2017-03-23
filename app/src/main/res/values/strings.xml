@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">IKaros</string>
     <string name="title_activity_demo">Demo</string>
+    <string name="train_info_lishi">历时</string>
+    <string name="train_info_arrive_time">到达时间</string>
+    <string name="train_info_start_time">出发时间</string>
+    <string name="train_info_end_station">到达站</string>
+    <string name="train_info_start_station">出发站</string>
+    <string name="train_info_train_code">车次</string>
+    <string name="train_info_status">车次状态</string>
     <string name="hweather_query_now">https://free-api.heweather.com/v5/now?</string>
     <string name="hunkonw_error">出现了未知错误</string>
     <string name="tuling_host">http://www.tuling123.com/openapi/api?</string>

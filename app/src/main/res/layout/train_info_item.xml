@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_start_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="蚌埠"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="5dp" />
+
+            <TextView
+                android:id="@+id/tv_arrive_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="芜湖"
+                android:textColor="#666666" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_from_station_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="蚌埠"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="5dp" />
+
+            <TextView
+                android:id="@+id/tv_to_station_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="芜湖"
+                android:textColor="#666666" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_train_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="11:22"
+                android:textColor="#000"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="5dp" />
+
+            <TextView
+                android:id="@+id/tv_use_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12:12"
+                android:textColor="#666666" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_train_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="K551"
+            android:textColor="#000"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</LinearLayout>

@@ -7,10 +7,12 @@ package com.reharu.ikaros.haru.cortana.dto;
 public class OpIcon {
     public int imgId ;
     public String desc ;
+    public Class acCls ;
 
-    public OpIcon(int imgId, String desc) {
+    public OpIcon(int imgId, String desc, Class acCls) {
         this.imgId = imgId;
         this.desc = desc;
+        this.acCls = acCls;
     }
 
     @Override

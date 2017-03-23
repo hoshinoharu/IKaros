@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="HaruToolbarLayout">
-        <attr name="includeStatusBar" format="boolean"/>
+        <attr name="includeStatusBar" format="boolean" />
         <attr name="title" format="string" />
         <attr name="titleColor" format="color" />
         <attr name="leftHint" format="string" />
@@ -9,15 +9,20 @@
         <attr name="leftDrawable" format="reference" />
     </declare-styleable>
     <declare-styleable name="HaruAppBarLayout">
-        <attr name="containStatusBar" format="boolean"/>
+        <attr name="containStatusBar" format="boolean" />
     </declare-styleable>
     <declare-styleable name="EdgeTransparentView">
         <attr name="edge_position">
-            <flag name="top" value="0x01"/>
-            <flag name="bottom" value="0x02"/>
-            <flag name="left" value="0x04"/>
-            <flag name="right" value="0x08"/>
+            <flag name="top" value="0x01" />
+            <flag name="bottom" value="0x02" />
+            <flag name="left" value="0x04" />
+            <flag name="right" value="0x08" />
         </attr>
-        <attr name="edge_width" format="dimension"/>
+        <attr name="edge_width" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="com.reharu.lingmar.view.SettingHotelServiceIcon">
+        <attr name="desicon" format="string" />
+        <attr name="desname" format="string" />
     </declare-styleable>
 </resources>
