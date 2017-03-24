@@ -26,6 +26,7 @@ import com.orange.engine.options.ScreenOrientation;
 import com.orange.input.touch.TouchEvent;
 import com.orange.opengl.font.BitmapFont;
 import com.orange.res.RegionRes;
+import com.orange.res.SoundRes;
 import com.orange.ui.activity.GameActivity;
 import com.orange.ui.launcher.GameLauncher;
 import com.reharu.harubase.base.AutoInjecter;
@@ -39,8 +40,11 @@ import com.reharu.harubase.tools.StreamTool;
 import com.reharu.ikaros.R;
 import com.reharu.ikaros.haru.components.HaruCoordinatorLayout;
 import com.reharu.ikaros.haru.components.OpIconAdapter;
+import com.reharu.ikaros.haru.components.SpeackVolumeChangeListener;
+import com.reharu.ikaros.haru.components.SpeakVolumeDialog;
 import com.reharu.ikaros.haru.cortana.Cortana;
 import com.reharu.ikaros.haru.cortana.CortanaAnimResManager;
+import com.reharu.ikaros.haru.cortana.SoundMannager;
 import com.reharu.ikaros.haru.cortana.adapter.ChartRecordaAdapter;
 import com.reharu.ikaros.haru.cortana.behavior.Feeling;
 import com.reharu.ikaros.haru.cortana.dto.ChartRecord;
@@ -49,6 +53,7 @@ import com.reharu.ikaros.haru.cortana.dto.SpeackContent;
 import com.reharu.ikaros.haru.cortana.listener.CortanaListener;
 import com.reharu.ikaros.haru.cortana.scene.CortanaScene;
 import com.reharu.ikaros.haru.cortana.sprite.WaveSprite;
+import com.reharu.ikaros.haru.sound.SpeechTool;
 import com.reharu.ikaros.haru.tools.GsonTool;
 import com.reharu.ikaros.haru.tools.Location;
 import com.reharu.ikaros.haru.tools.LocationGetter;
@@ -65,7 +70,7 @@ import java.util.List;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoInjectable {
+public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoInjectable, OpIconAdapter.OnErrorListener {
     /*数据相关*/
     private AnimationDrawable cortanaAppera_0;
     private AnimationDrawable cortanaNormalBlink;
@@ -94,11 +99,16 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     @AutoInjecter.ViewInject(R.id.chartRecordList) private ListView chartRecordList ;
     @AutoInjecter.ViewInject(R.id.inputText) private EditText inputText ;
     @AutoInjecter.ViewInject(R.id.sendBtn) private View sendBtn ;
+    @AutoInjecter.ViewInject(R.id.voiceBtn) private View voiceBtn ;
+    @AutoInjecter.ViewInject(R.id.recordListContainer) private ViewGroup recordListContainer ;
 
     /*显示的图标*/
     @AutoInjecter.ViewInject(R.id.topGrid) private GridView topGrid ;
     @AutoInjecter.ViewInject(R.id.leftGrid) private GridView leftGrid ;
     @AutoInjecter.ViewInject(R.id.rightGrid) private GridView rightGrid ;
+
+    private SpeakVolumeDialog speakVolumeDialog ;
+    private SpeackVolumeChangeListener speackVolumeChangeListener;
 
     @Override
     public GameLauncher CreateGameLauncher() {
@@ -128,7 +138,10 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
                 RegionRes.loadTexturesFromAssets(CortanaAnimResManager.JUMP_XML);
                 RegionRes.loadTexturesFromAssets(CortanaAnimResManager.ROTATE_XML);
                 RegionRes.loadTexturesFromAssets(CortanaAnimResManager.DOUBT_XML);
+                RegionRes.loadTexturesFromAssets(CortanaAnimResManager.BLINK_XML);
                 RegionRes.loadTexturesFromAssets(WaveSprite.WAVE_XML);
+                SoundRes.loadSoundFromAssets(SoundMannager.LISTENING_START, "sound/cortana_start.mp3");
+                SoundRes.loadSoundFromAssets(SoundMannager.LISTENING_END, "sound/cortana_end.mp3");
             }
 
             //加载字体
@@ -170,6 +183,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     private void initAnimator() {
         layoutAnimation = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         layoutAnimation.setDuration(500);
+        layoutAnimation.setStartOffset(500);
         layoutAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
         AnimeTool.showAnime(chartLayout,true).start();
     }
@@ -192,12 +206,12 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
             List<OpIcon> leftList = iconList.subList(topMaxIcon, topMaxIcon+leftIcon) ;
             List<OpIcon> rightList = iconList.subList(topMaxIcon+leftIcon, iconList.size()) ;
             if(rightList.size() > 0){
-                OpIconAdapter rightAdapter = new OpIconAdapter(rightList, this);
+                OpIconAdapter rightAdapter = new OpIconAdapter(rightList, this, this);
                 rightGrid.setAdapter(rightAdapter);
             }
-            leftGrid.setAdapter(new OpIconAdapter(leftList, this));
+            leftGrid.setAdapter(new OpIconAdapter(leftList, this, this));
         }
-        topGrid.setAdapter(new OpIconAdapter(topList, this));
+        topGrid.setAdapter(new OpIconAdapter(topList, this, this));
         topGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));
         leftGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));
         rightGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));
@@ -208,7 +222,9 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         LocationGetter.init(this);
+        SpeechTool.init(this, getString(R.string.appid));
 
         queryLoc();
 
@@ -218,7 +234,9 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
         initIcon();
 
+
         ((ViewGroup)sendBtn.getParent()).setLayoutAnimation(new LayoutAnimationController(layoutAnimation));
+        recordListContainer.setLayoutAnimation(new LayoutAnimationController(layoutAnimation));
     }
     private void inflateUI() {
         ViewGroup rootView = ActivityTool.getRootView(HCortanaActivity.this);
@@ -237,6 +255,9 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
         int halfWidth = ScreenTool.getScreenSize().widthPixels/2 ;
         leftGrid.getLayoutParams().width = halfWidth ;
         rightGrid.getLayoutParams().width = halfWidth ;
+
+
+        speakVolumeDialog = new SpeakVolumeDialog(this);
     }
     private void onCreateOperateInterface() {
         ActivityTool.getRootView(HCortanaActivity.this).bringChildToFront(cortanaInterface);
@@ -259,7 +280,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     }
 
     public void queryWeather(){
-        WeatherService.get().queryNow("马鞍山市", new OKHttpTool.HCallBack<Weather>() {
+        WeatherService.get().queryNow(mainlocation.cityName, new OKHttpTool.HCallBack<Weather>() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 try{
@@ -295,12 +316,14 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
 
 
+
     private void initView() {
         recordAdapter = new ChartRecordaAdapter(chartRecordList, new ArrayList<ChartRecord>()) ;
         chartRecordList.setAdapter(recordAdapter);
     }
 
     private void initListener() {
+
         cortana.addCortanaListener(new CortanaListener.Adapter() {
             @Override
             public void onSpeack(Cortana cortana, final String content) {
@@ -328,6 +351,16 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
                 event1.recycle();
             }
         });
+        voiceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speakVolumeDialog.show();
+            }
+        });
+
+
+        speackVolumeChangeListener = new SpeackVolumeChangeListener(this, speakVolumeDialog, cortana);
+        speakVolumeDialog.setListener(speackVolumeChangeListener);
     }
 
 
@@ -348,7 +381,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     public void talkToCortana(CharSequence msg){
         inputText.setText("");
         recordAdapter.addRecord(new ChartRecord(msg, ChartRecord.MASTER));
-        cortana.getMsg(msg);
+        cortana.getMessage(msg);
     }
 
     public boolean verifyInput(){
@@ -377,4 +410,8 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     }
 
 
+    @Override
+    public void onError() {
+        cortana.reportError("该功能暂未实现，真是抱歉呢");
+    }
 }

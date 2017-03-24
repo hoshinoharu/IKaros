@@ -15,7 +15,6 @@ public class HaruApp extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext() ;
-
     }
     public static Context context(){
         return context ;

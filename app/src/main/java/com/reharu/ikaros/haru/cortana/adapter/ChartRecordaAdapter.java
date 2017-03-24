@@ -80,7 +80,6 @@ public class ChartRecordaAdapter extends BaseAdapter {
         }
         ViewHolder holder = (ViewHolder) convertView.getTag();
         ChartRecord chartRecord = chartRecordList.get(position) ;
-        HLog.e("TAG", "onShow :" + chartRecord.content);
         boolean fromLeft = true ;
         if(chartRecord.speakcer == ChartRecord.CORTANA){
             holder.left.setVisibility(View.VISIBLE);

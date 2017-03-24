@@ -30,6 +30,10 @@ public interface CortanaListener{
 
          }
 
+         @Override
+         public void onGetMessage(String message) {
+
+         }
      }
 
     void onApperance(Cortana cortana) ;
@@ -39,4 +43,6 @@ public interface CortanaListener{
     void onFeelingChanged(Cortana cortana, Feeling feeling, boolean changed);
 
     void onTouch(Cortana cortana) ;
+
+    void onGetMessage(String message) ;
 }

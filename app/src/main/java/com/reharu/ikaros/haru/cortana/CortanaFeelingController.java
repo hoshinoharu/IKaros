@@ -42,6 +42,10 @@ public class CortanaFeelingController extends CortanaListener.Adapter {
                 cortana.cortanaAnimate(animResManager.getDoubtAnimation(), false);
                 cortana.nextCortanaAnimate(animResManager.getNormalAnimation(), true);
                 break;
+            case SAD:
+                cortana.cortanaAnimate(animResManager.getSadAnimation(), false);
+                cortana.nextCortanaAnimate(animResManager.getNormalAnimation(), true);
+                break;
         }
     }
 }

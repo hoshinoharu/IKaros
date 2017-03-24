@@ -48,7 +48,7 @@ public class CortanaChartRecordAdapter extends RecyclerView.Adapter<CortanaChart
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ChartRecord chartRecord = chartRecordList.get(position) ;
-        HLog.e("TAG", "onShow :" + chartRecord.content);
+        HLog.e("TAG", "onDialogShow :" + chartRecord.content);
         if(chartRecord.speakcer == ChartRecord.CORTANA){
             holder.left.setVisibility(View.VISIBLE);
             holder.right.setVisibility(View.GONE);

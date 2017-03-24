@@ -1,13 +1,19 @@
 package com.reharu.ikaros.haru.cortana;
 
+import com.reharu.harubase.tools.HLog;
+import com.reharu.harubase.tools.OKHttpTool;
 import com.reharu.ikaros.haru.cortana.behavior.Feeling;
+import com.reharu.ikaros.haru.cortana.listener.CortanaListener;
+import com.reharu.ikaros.haru.tuling.service.TulingService;
 import com.reharu.ikaros.haru.tuling.vo.TulingResp;
+
+import okhttp3.Call;
 
 /**
  * Created by hoshino on 2017/3/20.
  */
 
-public class TulingRespHandler {
+public class TulingRespHandler  extends CortanaListener.Adapter{
 
     private Cortana cortana ;
 
@@ -47,6 +53,22 @@ public class TulingRespHandler {
             case TulingResp.KEY_ERROR:error="访问的键值错了哦";break;
         }
         cortana.onError(error);
+    }
 
+    @Override
+    public void onGetMessage(String message) {
+        HLog.e("TAG", "tuling：" + message);
+        TulingService.get().queryTuling(message, new OKHttpTool.HCallBack<TulingResp>() {
+            @Override
+            public void onResponse(Call call, TulingResp tulingResp) {
+                handleTulingResp(tulingResp);
+            }
+
+            @Override
+            public void onFail(Call call, Exception e) {
+                cortana.onError("发生了未知错误:"+e.getMessage());
+                HLog.ex("TAG", e);
+            }
+        });
     }
 }

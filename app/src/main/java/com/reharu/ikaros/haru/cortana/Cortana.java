@@ -8,19 +8,14 @@ import com.orange.entity.text.TextOptions;
 import com.orange.input.touch.TouchEvent;
 import com.orange.util.HorizontalAlign;
 import com.reharu.harubase.tools.HLog;
-import com.reharu.harubase.tools.OKHttpTool;
 import com.reharu.harubase.tools.ScreenTool;
 import com.reharu.ikaros.haru.activities.HCortanaActivity;
 import com.reharu.ikaros.haru.cortana.behavior.Feeling;
 import com.reharu.ikaros.haru.cortana.dto.SpeackContent;
 import com.reharu.ikaros.haru.cortana.listener.CortanaListener;
-import com.reharu.ikaros.haru.tuling.service.TulingService;
-import com.reharu.ikaros.haru.tuling.vo.TulingResp;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 /**
  * Created by hoshino on 2017/3/18.
@@ -56,10 +51,15 @@ public class Cortana extends Layer {
     public Cortana(Scene pScene) {
         super(pScene);
         this.animResManager = new CortanaAnimResManager(this) ;
-        this.addCortanaListener(new CortanaFeelingController(animResManager));
         this.setIgnoreTouch(false);
         this.setHeight(ScreenTool.getScreenSize().heightPixels/2);
-        tulingRespHandler = new TulingRespHandler(this) ;
+
+        //初始化
+        this.addCortanaListener(new CortanaFeelingController(animResManager));
+        this.addCortanaListener(new TulingRespHandler(this));
+
+        this.tulingRespHandler = new TulingRespHandler(this) ;
+
         init(animResManager.getAllAnimations());
     }
 
@@ -201,20 +201,18 @@ public class Cortana extends Layer {
     }
 
     //从外部接受到信息
-    public void getMsg(CharSequence msg){
-        TulingService.get().queryTuling(msg.toString(), new OKHttpTool.HCallBack<TulingResp>() {
-            @Override
-            public void onResponse(Call call, TulingResp tulingResp) {
-                tulingRespHandler.handleTulingResp(tulingResp);
-            }
-
-            @Override
-            public void onFail(Call call, Exception e) {
-                onError("发生了未知错误:"+e.getMessage());
-                HLog.ex("TAG", e);
-            }
-        });
+    public void getMessage(CharSequence msg){
+        onGetMessage(msg);
     }
+
+    private void onGetMessage(CharSequence msg) {
+        if(msg != null){
+            for(CortanaListener cortanaListener : cortanaListenerList){
+                cortanaListener.onGetMessage(msg.toString());
+            }
+        }
+    }
+
     public void speak(SpeackContent content){
         if(content != null){
             this.changeFeeling(content.feeling);
@@ -241,4 +239,7 @@ public class Cortana extends Layer {
         }
     }
 
+    public void reportError(String error) {
+        onError(error);
+    }
 }

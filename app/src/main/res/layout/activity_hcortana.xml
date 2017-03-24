@@ -46,75 +46,115 @@
                 />
         </RelativeLayout>
     </android.support.design.widget.CoordinatorLayout>
+
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/chartLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
-        android:background="#efff"
-        >
+        android:background="#afff">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom">
 
             <LinearLayout
+                android:id="@+id/recordListContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <FrameLayout
+                <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1">
-
+                    android:layout_weight="1"
+                    app:cardCornerRadius="2dp"
+                    app:cardBackgroundColor="#cfff"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    >
                     <ListView
                         android:id="@+id/chartRecordList"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:divider="@null"
                         android:scrollbars="none"
-                        android:padding="8dp"></ListView>
-                </FrameLayout>
+                        android:padding="4dp"
+                        ></ListView>
+                </android.support.v7.widget.CardView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <EditText
-                        android:id="@+id/inputText"
-                        android:theme="@style/HaruEditText"
+                    android:padding="8dp"
+                    android:background="#2fff"
+                    >
+                    <android.support.v7.widget.CardView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
-                        android:textColor="#000"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        />
+                        android:background="#fff"
+                        app:cardCornerRadius="4dp"
+                        >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:id="@+id/voiceBtn"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/ic_voice"
+                                android:layout_gravity="bottom"
+                                android:clickable="true"
+                                android:background="#0000"
+                                android:padding="4dp"
+                                android:layout_marginLeft="8dp"
+                                />
+                            <View
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="8dp"
+                                android:background="#000"
+                                android:alpha="0.12"
+                                />
+                            <EditText
+                                android:id="@+id/inputText"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1"
+                                android:background="#0000"
+                                android:textColor="#000"
+                                android:textSize="14sp"
+                                android:textStyle="bold"
+                                android:theme="@style/HaruEditText"
+                                />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
 
                     <android.support.v7.widget.CardView
                         android:id="@+id/sendBtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
+                        android:layout_height="40dp"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        app:cardCornerRadius="2dp">
+                        android:clickable="true"
+                        app:cardCornerRadius="4dp"
+                        android:layout_gravity="bottom"
+                        app:cardBackgroundColor="#cfff"
+                        >
                         <TextView
                             android:layout_width="60dp"
-                            android:layout_height="36dp"
+                            android:layout_height="match_parent"
                             android:background="#00BFFF"
                             android:gravity="center"
                             android:text="发送"
                             android:textColor="#fff"
                             android:textSize="16sp"
-                            android:textStyle="bold"
-                            />
+                            android:textStyle="bold" />
                     </android.support.v7.widget.CardView>
                 </LinearLayout>
             </LinearLayout>

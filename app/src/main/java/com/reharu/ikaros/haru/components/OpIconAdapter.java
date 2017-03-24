@@ -25,11 +25,15 @@ import java.util.List;
 
 public class OpIconAdapter extends BaseAdapter {
 
+    public interface OnErrorListener{
+        void onError();
+    }
 
-    public class ViewHolder extends HaruViewHolder{
+
+    class ViewHolder extends HaruViewHolder{
         @AutoInjecter.ViewInject(R.id.icon) ImageView icon ;
         @AutoInjecter.ViewInject(R.id.desc) TextView desc ;
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
         }
         public View getContent(){
@@ -41,9 +45,17 @@ public class OpIconAdapter extends BaseAdapter {
 
     private Activity owner ;
 
+    private OnErrorListener listener ;
+
     public OpIconAdapter(List<OpIcon> opIconList, Activity owner) {
         this.opIconList = opIconList;
         this.owner = owner;
+    }
+
+    public OpIconAdapter(List<OpIcon> opIconList, Activity owner, OnErrorListener listener) {
+        this.opIconList = opIconList;
+        this.owner = owner;
+        this.listener = listener;
     }
 
     @Override
@@ -89,11 +101,22 @@ public class OpIconAdapter extends BaseAdapter {
         viewHolder.getContent().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                owner.startActivity(new Intent(owner, opIcon.acCls));
+                if(opIcon.acCls == null){
+                    onError();
+                }else {
+                    owner.startActivity(new Intent(owner, opIcon.acCls));
+                }
             }
         });
         viewHolder.icon.setImageResource(opIcon.imgId);
         viewHolder.desc.setText(opIcon.desc);
         return convertView;
     }
+
+    private void onError(){
+        if(this.listener != null){
+            this.listener.onError();
+        }
+    }
+
 }

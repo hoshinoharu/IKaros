@@ -11,4 +11,5 @@
     <string name="hweather_query_now">https://free-api.heweather.com/v5/now?</string>
     <string name="hunkonw_error">出现了未知错误</string>
     <string name="tuling_host">http://www.tuling123.com/openapi/api?</string>
+    <string name="appid">58d38645</string>
 </resources>

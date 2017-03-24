@@ -34,6 +34,10 @@ public class CortanaAnimResManager {
     public static final String DOUBT_XML = "texture/doubt.xml";
     private static final String DOUBT = "doubt";
 
+    public static final String BLINK_XML = "texture/blink.xml";
+    private static final String BLINK = "blink";
+
+
     private List<Animation> animationList;
 
     private Animation appera0;
@@ -43,6 +47,7 @@ public class CortanaAnimResManager {
     private Animation jump;
     private Animation rotate;
     private Animation doubt;
+    private Animation blink;
 
 
 
@@ -57,6 +62,7 @@ public class CortanaAnimResManager {
     private Animation[] apperaSet ;
     private Animation[] normalSet ;
     private Animation[] doubtSet ;
+    private Animation[] sadSet;
 
     private List<Animation> allAnimations ;
 
@@ -71,13 +77,15 @@ public class CortanaAnimResManager {
         jump = new Animation(CortanaAnimResManager.JUMP, 0, -5);
         rotate =  new Animation(CortanaAnimResManager.ROTATE, -10, -10);
         doubt =  new Animation(CortanaAnimResManager.DOUBT, -0, -50);
+        blink =  new Animation(CortanaAnimResManager.BLINK, -5, -30);
         //初始化动作列表 方便随机抽取动作
         happySet = new Animation[]{happy, happy, happy, happy,jump,jump, jump, rotate, rotate, love};
         apperaSet = new Animation[]{appera0};
         normalSet = new Animation[]{normal_blink} ;
         doubtSet = new Animation[]{doubt} ;
+        sadSet = new Animation[]{blink};
         allAnimations = Arrays.asList(
-                appera0,normal_blink,happy,love,jump,rotate,doubt
+                appera0,normal_blink,happy,love,jump,rotate,doubt,blink
         ); ;
         //加载数据
         for(Animation animation : allAnimations){
@@ -107,6 +115,14 @@ public class CortanaAnimResManager {
 
     public Animation getDoubtAnimation(){
         return doubtSet[MathTool.randomInt(doubtSet.length)] ;
+    }
+
+    public Animation getSadAnimation(){
+        return randomAnimation(sadSet) ;
+    }
+
+    private Animation randomAnimation(Animation[] animations){
+        return animations[MathTool.randomInt(animations.length)] ;
     }
 
     public Animation getWave() {
