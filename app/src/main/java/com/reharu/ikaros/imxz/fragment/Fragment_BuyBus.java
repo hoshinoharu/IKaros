@@ -16,6 +16,8 @@ import com.reharu.ikaros.R;
  */
 
 public class Fragment_BuyBus extends Fragment {
+
+
     private View mView;
     private DrawerLayout mDrawer;
 
