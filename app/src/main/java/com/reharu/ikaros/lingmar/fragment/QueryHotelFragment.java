@@ -1,6 +1,7 @@
-package com.reharu.ikaros.lingmar;
+package com.reharu.ikaros.lingmar.fragment;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +12,9 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
@@ -20,10 +23,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.reharu.harubase.base.AutoInjecter;
-import com.reharu.harubase.base.HaruActivity;
 import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
+import com.reharu.ikaros.haru.activities.HCortanaActivity;
 import com.reharu.ikaros.lingmar.adapter.HotelItemAdapter;
 import com.reharu.ikaros.lingmar.adapter.PosPointAdapter;
 import com.reharu.ikaros.lingmar.domain.Hotel;
@@ -33,28 +35,21 @@ import com.reharu.ikaros.lingmar.utils.JSONTool;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QueryHotelActivity extends HaruActivity {
+public class QueryHotelFragment extends Fragment {
 
-    @AutoInjecter.ViewInject(R.id.tv_city_titel)
+
     private TextView tv_city_titel;
-    @AutoInjecter.ViewInject(R.id.listview_city)
     private ListView mListviewCity;
-    @AutoInjecter.ViewInject(R.id.swipe_layout)
     private SwipeRefreshLayout swipeLayout;
-    @AutoInjecter.ViewInject(R.id.drawerlayout)
     private DrawerLayout drawerlayout;
 
     // 侧滑栏中的控件
-    @AutoInjecter.ViewInject(R.id.city_query_auto)
     private TextView queryAutoText;
-    @AutoInjecter.ViewInject(R.id.et_queryCity)
     private EditText et_queryCity;
-    @AutoInjecter.ViewInject(R.id.iv_queryCity)
     private ImageView iv_queryCity;
-    @AutoInjecter.ViewInject(R.id.listview_AutoComplete)
     private ListView listview_AutoComplete;
-    @AutoInjecter.ViewInject(R.id.drawer_left_layout)
     private View drawerLeft;
+    private View mView;
 
     private HotelItemAdapter hotelAdapter;
     private PosPointAdapter posPointAdapter;
@@ -71,24 +66,51 @@ public class QueryHotelActivity extends HaruActivity {
     private String cityIdIndex = "0101";
     private String keyWordsIndex = "";
 
-    @Override
-    public int getContentViewId() {
-        return R.layout.activity_query_hotel;
-    }
+    private HCortanaActivity cortanaActivity ;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        adaptColor();
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (mView == null) {
+            mView = inflater.inflate(R.layout.activity_query_hotel, null);
+            cortanaActivity = (HCortanaActivity) getActivity();
+        }
+        ViewGroup parent = (ViewGroup) mView.getParent();
+        if (parent != null) {
+            parent.removeView(mView);
+        }
+
+        initUI();
+//        adaptColor();
         initData();
         drawerListener();
+        return mView;
+    }
+
+    private void initUI() {
+        tv_city_titel = (TextView) mView.findViewById(R.id.tv_city_titel);
+        mListviewCity = (ListView) mView.findViewById(R.id.listview_city);
+        swipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_layout);
+        drawerlayout = (DrawerLayout) mView.findViewById(R.id.drawerlayout);
+        queryAutoText = (TextView) mView.findViewById(R.id.city_query_auto);
+        et_queryCity = (EditText) mView.findViewById(R.id.et_queryCity);
+        iv_queryCity = (ImageView) mView.findViewById(R.id.iv_queryCity);
+        listview_AutoComplete = (ListView) mView.findViewById(R.id.listview_AutoComplete);
+        drawerLeft = mView.findViewById(R.id.drawer_left_layout);
+
+        tv_city_titel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cityChange(v);
+            }
+        });
     }
 
     private void adaptColor() {
         //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
     private void initData() {
@@ -111,7 +133,7 @@ public class QueryHotelActivity extends HaruActivity {
                         Log.d("123", "updataHotel");
                         updataHotel();
                     } catch (Exception e) {
-                        errorToast("没有更多数据了");
+//                        errorToast("没有更多数据了");
                     }
                 }
             }
@@ -240,13 +262,21 @@ public class QueryHotelActivity extends HaruActivity {
         mListviewCity.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), HotelActivity.class);
+
+
+                Bundle bundle = new Bundle();
                 Hotel hotel = hotelList.get(i);
-                intent.putExtra("hotelName", hotel.getHotelName());
-                intent.putExtra("detailPageUrl", hotel.getDetailPageUrl());
-                startActivity(intent);
-                finish();
-                overridePendingTransition(R.animator.anim_hotel_in, R.animator.anim_hotel_out);
+                bundle.putString("hotelName", hotel.getHotelName());
+                bundle.putString("detailPageUrl", hotel.getDetailPageUrl());
+                cortanaActivity.startFragment(HotelFragment.class, bundle);
+
+//                Intent intent = new Intent(getActivity().getApplicationContext(), HotelFragment.class);
+//                Hotel hotel = hotelList.get(i);
+//                intent.putExtra("hotelName", hotel.getHotelName());
+//                intent.putExtra("detailPageUrl", hotel.getDetailPageUrl());
+//                startActivity(intent);
+//                getActivity().finish();
+//                getActivity().overridePendingTransition(R.animator.anim_hotel_in, R.animator.anim_hotel_out);
             }
         });
     }
@@ -269,7 +299,7 @@ public class QueryHotelActivity extends HaruActivity {
             hotelList.addAll(hotels);
             // 展示宾馆item
             if (hotelAdapter == null) {
-                hotelAdapter = new HotelItemAdapter(getApplicationContext(), hotelList);
+                hotelAdapter = new HotelItemAdapter(getActivity().getApplicationContext(), hotelList);
                 mListviewCity.setAdapter(hotelAdapter);
             } else {
                 hotelAdapter.notifyDataSetChanged();
@@ -299,7 +329,7 @@ public class QueryHotelActivity extends HaruActivity {
             HLog.d("123", "NewHotelAsyncTask hotelList: " + hotelList);
             // 展示宾馆item
             if (hotelAdapter == null) {
-                hotelAdapter = new HotelItemAdapter(getApplicationContext(), hotelList);
+                hotelAdapter = new HotelItemAdapter(getActivity().getApplicationContext(), hotelList);
                 mListviewCity.setAdapter(hotelAdapter);
             } else {
                 hotelAdapter.notifyDataSetChanged();
@@ -324,12 +354,16 @@ public class QueryHotelActivity extends HaruActivity {
             posPointList.clear();
             posPointList.addAll(posPoints);
 //            HLog.d("123", "posPointList: " + posPointList.toString());
-            if (posPointAdapter == null) {
-                PosPointAdapter posPointAdapter = new PosPointAdapter(getApplicationContext(), posPoints);
-                listview_AutoComplete.setAdapter(posPointAdapter);
-            } else {
-                posPointAdapter.notifyDataSetChanged();
+            Activity activity = getActivity() ;
+            if(activity != null){
+                if (posPointAdapter == null) {
+                    PosPointAdapter posPointAdapter = new PosPointAdapter(activity.getApplicationContext(), posPoints);
+                    listview_AutoComplete.setAdapter(posPointAdapter);
+                } else {
+                    posPointAdapter.notifyDataSetChanged();
+                }
             }
         }
     }
+
 }

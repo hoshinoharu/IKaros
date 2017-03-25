@@ -3,7 +3,6 @@ package com.reharu.ikaros.imxz.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,7 @@ import android.widget.TextView;
 
 import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
-import com.reharu.ikaros.imxz.activity.CalendarActivity;
-import com.reharu.ikaros.imxz.activity.ChoosePlaceActivity;
-import com.reharu.ikaros.imxz.activity.TrainActivity;
+import com.reharu.ikaros.imxz.listener.OnChooseCoP;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +22,7 @@ import java.util.Date;
  * Created by Imxz on 2017/3/21.
  */
 
-public class Fragment_BuyTrain extends Fragment {
+public class Fragment_BuyTrain extends MainFragment implements OnChooseCoP {
 
 
     private final static int REQUEST_GET_CANLENDAR = 255;
@@ -57,7 +54,6 @@ public class Fragment_BuyTrain extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (mView == null) {
             mView = inflater.inflate(R.layout.fragm_buytrain, null);
-            initViewByParent();
             initView();
             initViewAction();
             initData();
@@ -67,7 +63,7 @@ public class Fragment_BuyTrain extends Fragment {
         if (parent != null) {
             parent.removeView(mView);
         }
-
+        initViewByParent();
         return mView;
     }
 
@@ -91,8 +87,8 @@ public class Fragment_BuyTrain extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TrainActivity.closeDrawer();
-                TrainActivity.reFreshStationInfo(trainDate, fromDate, toDate);
+                Fragment_Main.closeDrawer();
+                Fragment_Main.reFreshStationInfo(trainDate, fromDate, toDate);
                 HLog.e("TAG", "关闭");
             }
         });
@@ -100,44 +96,43 @@ public class Fragment_BuyTrain extends Fragment {
         ll_getdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getActivity(), CalendarActivity.class), REQUEST_GET_CANLENDAR);
+                cortanaActivity.startFragment(Fragment_Main.fragms[3]);
             }
         });
         tv_startWay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getActivity(), ChoosePlaceActivity.class), REQUEST_GET_PLACE_FROM);
+                cortanaActivity.startFragment(Fragment_Main.fragms[4]);
+                Fragment_ChoosePlace.fromTo = "from";
             }
         });
         tv_endWay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getActivity(), ChoosePlaceActivity.class), REQUEST_GET_PLACE_TO);
+                cortanaActivity.startFragment(Fragment_Main.fragms[4]);
+                Fragment_ChoosePlace.fromTo = "to";
             }
         });
+
 
     }
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (resultCode) {
-            case CalendarActivity.CALENDAR_RESULT_CODE: {
-                trainDate = data.getStringExtra("date");
-                tv_chooseWeek.setText(data.getStringExtra("week"));
-                tv_chooseDate.setText((data.getIntExtra("month", 0) + 1) + "月" + data.getStringExtra("day") + "日");
+    public void setChooseContent(Intent intent) {
+        String flag = intent.getStringExtra("flag");
+        if ("Calendar".equals(flag)) {
+            trainDate = intent.getStringExtra("date");
+            tv_chooseWeek.setText(intent.getStringExtra("week"));
+            tv_chooseDate.setText((intent.getIntExtra("month", 0) + 1) + "月" + intent.getStringExtra("day") + "日");
+        } else if ("Place".equals(flag)) {
+            if (intent.getStringExtra("FromTo").equals("from")) {
+                fromDate = intent.getStringExtra("Place");
+                tv_startWay.setText(fromDate);
+            } else if (intent.getStringExtra("FromTo").equals("to")) {
+                toDate = intent.getStringExtra("Place");
+                tv_endWay.setText(toDate);
             }
-            break;
-            case ChoosePlaceActivity.PLACE_RESULT_CODE: {
-                if (requestCode == REQUEST_GET_PLACE_FROM) {
-                    fromDate = data.getStringExtra("Place");
-                    tv_startWay.setText(fromDate);
-                } else if (requestCode == REQUEST_GET_PLACE_TO) {
-                    toDate = data.getStringExtra("Place");
-                    tv_endWay.setText(toDate);
-                }
-            }
-            break;
         }
     }
 }

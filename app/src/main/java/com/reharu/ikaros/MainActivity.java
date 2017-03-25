@@ -1,6 +1,5 @@
 package com.reharu.ikaros;
 
-import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,7 +8,6 @@ import android.widget.RelativeLayout;
 
 import com.reharu.harubase.base.AutoInjecter;
 import com.reharu.harubase.base.HaruActivity;
-import com.reharu.ikaros.imxz.activity.TrainActivity;
 
 public class MainActivity extends HaruActivity {
 
@@ -24,8 +22,6 @@ public class MainActivity extends HaruActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.e("TAG", "T");
-        startActivity(new Intent(this, TrainActivity.class));
-        finish();
         initCortana();
     }
 

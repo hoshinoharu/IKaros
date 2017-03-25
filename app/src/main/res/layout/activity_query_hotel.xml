@@ -5,7 +5,7 @@
     android:id="@+id/drawerlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".lingmar.QueryHotelActivity">
+    tools:context=".lingmar.fragment.QueryHotelFragment">
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -21,7 +21,6 @@
             android:background="#FF9933"
             android:clipToPadding="true"
             android:gravity="center"
-            android:onClick="cityChange"
             android:text="北京市"
             android:textColor="#fff"
             android:textSize="20sp" />

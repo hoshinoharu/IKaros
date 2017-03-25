@@ -160,4 +160,8 @@
             </LinearLayout>
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
+    <FrameLayout
+        android:id="@+id/fragmentContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" ></FrameLayout>
 </com.reharu.ikaros.haru.components.HaruCoordinatorLayout>

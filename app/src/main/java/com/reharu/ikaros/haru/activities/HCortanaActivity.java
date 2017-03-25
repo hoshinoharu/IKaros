@@ -1,10 +1,13 @@
 package com.reharu.ikaros.haru.activities;
 
 import android.animation.Animator;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -59,8 +62,8 @@ import com.reharu.ikaros.haru.tools.Location;
 import com.reharu.ikaros.haru.tools.LocationGetter;
 import com.reharu.ikaros.haru.weather.service.WeatherService;
 import com.reharu.ikaros.haru.weather.vo.Weather;
-import com.reharu.ikaros.imxz.activity.TrainActivity;
-import com.reharu.ikaros.lingmar.QueryHotelActivity;
+import com.reharu.ikaros.imxz.fragment.Fragment_Main;
+import com.reharu.ikaros.lingmar.fragment.QueryHotelFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,6 +109,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     @AutoInjecter.ViewInject(R.id.topGrid) private GridView topGrid ;
     @AutoInjecter.ViewInject(R.id.leftGrid) private GridView leftGrid ;
     @AutoInjecter.ViewInject(R.id.rightGrid) private GridView rightGrid ;
+
 
     private SpeakVolumeDialog speakVolumeDialog ;
     private SpeackVolumeChangeListener speackVolumeChangeListener;
@@ -191,12 +195,12 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     private void initIcon() {
         int topMaxIcon = 4 ;
         List<OpIcon> iconList = Arrays.asList(
-                    new OpIcon(R.drawable.ic_alarm, "准点提醒", null),
-                    new OpIcon(R.drawable.ic_hotel, "酒店住宿", QueryHotelActivity.class),
-                    new OpIcon(R.drawable.ic_plane, "机票车票", TrainActivity.class),
-                    new OpIcon(R.drawable.ic_loc, "地理位置", null),
-                    new OpIcon(R.drawable.ic_weather, "天气预报", null),
-                    new OpIcon(R.drawable.ic_shopping, "购物剁手", null)
+                    new OpIcon(R.drawable.ic_alarm, "准点提醒"),
+                    new OpIcon(R.drawable.ic_hotel, "酒店住宿", QueryHotelFragment.class),
+                    new OpIcon(R.drawable.ic_plane, "机票车票", Fragment_Main.fragms[5]),
+                    new OpIcon(R.drawable.ic_loc, "地理位置"),
+                    new OpIcon(R.drawable.ic_weather, "天气预报"),
+                    new OpIcon(R.drawable.ic_shopping, "购物剁手")
                 );
         List<OpIcon> topList  =iconList.subList(0, topMaxIcon) ;
         if(iconList.size() > 4){
@@ -234,10 +238,47 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
         initIcon();
 
+        initLayoutAnimation();
 
+    }
+
+    public void startFragment(Class<? extends Fragment> fragCls){
+        this.startFragment(fragCls, null);
+    }
+
+    public void startFragment(Class<? extends Fragment> fragCls, Bundle bundle){
+        Fragment fragment = null;
+        try {
+            fragment = fragCls.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        this.startFragment(fragment, bundle);
+
+    }
+
+    public void startFragment(Fragment fragment){
+        this.startFragment(fragment, null);
+    }
+
+    public void startFragment(Fragment fragment, Bundle bundle){
+        if(fragment != null){
+            if(bundle != null){
+                fragment.setArguments(bundle);
+            }
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.add(R.id.fragmentContent, fragment);
+            fragmentTransaction.addToBackStack(fragment.getClass().getName());
+            fragmentTransaction.commit();
+        }
+    }
+
+    private void initLayoutAnimation() {
         ((ViewGroup)sendBtn.getParent()).setLayoutAnimation(new LayoutAnimationController(layoutAnimation));
         recordListContainer.setLayoutAnimation(new LayoutAnimationController(layoutAnimation));
     }
+
     private void inflateUI() {
         ViewGroup rootView = ActivityTool.getRootView(HCortanaActivity.this);
         //加载UI交互界面
@@ -412,6 +453,19 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
     @Override
     public void onError() {
-        cortana.reportError("该功能暂未实现，真是抱歉呢");
+        if(cortana != null) {
+            cortana.reportError("该功能暂未实现，真是抱歉呢");
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(getFragmentManager().getBackStackEntryCount() >= 1) {
+                getFragmentManager().popBackStack() ;
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

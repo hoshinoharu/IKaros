@@ -1,14 +1,16 @@
-package com.reharu.ikaros.lingmar;
+package com.reharu.ikaros.lingmar.fragment;
 
-import android.content.Intent;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import com.reharu.harubase.base.AutoInjecter;
-import com.reharu.harubase.base.HaruActivity;
 import com.reharu.ikaros.R;
 import com.reharu.ikaros.lingmar.adapter.UserCommentAdapter;
 import com.reharu.ikaros.lingmar.domain.UserComment;
@@ -17,9 +19,8 @@ import com.reharu.ikaros.lingmar.utils.JSONTool;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HotelCommentActivity extends HaruActivity implements AbsListView.OnScrollListener {
+public class HotelCommentFragment extends Fragment implements AbsListView.OnScrollListener {
 
-    @AutoInjecter.ViewInject(R.id.listview_hotel_comment)
     private ListView listview_hotel_comment;
 
     private final String commentURL = "http://m.elong.com/hotel/api/morereviewnew?_rt=1489993579169&commenttype=1&pagesize=20";
@@ -29,17 +30,27 @@ public class HotelCommentActivity extends HaruActivity implements AbsListView.On
     private String hotelIdIndex;
     private List<UserComment> userComments;
     private UserCommentAdapter userCommentAdapter;
+    private View mView;
 
+    @Nullable
     @Override
-    public int getContentViewId() {
-        return R.layout.activity_hotel_comment;
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (mView == null) {
+            mView = inflater.inflate(R.layout.activity_hotel_comment, null);
+        }
+
+        ViewGroup parent = (ViewGroup) mView.getParent();
+        if (parent != null) {
+            parent.removeView(mView);
+        }
+        initUI();
+        initData();
+
+        return mView;
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        initData();
+    private void initUI() {
+        listview_hotel_comment = (ListView) mView.findViewById(R.id.listview_hotel_comment);
     }
 
     private void initData() {
@@ -47,8 +58,10 @@ public class HotelCommentActivity extends HaruActivity implements AbsListView.On
             userComments = new ArrayList<UserComment>();
         }
 
-        Intent intent = this.getIntent();
-        hotelIdIndex = intent.getStringExtra("hotelID");
+        // 获取上一个界面的数据
+//        Intent intent = this.getIntent();
+//        hotelIdIndex = intent.getStringExtra("hotelID");
+        hotelIdIndex = getArguments().getString("hotelID");
 
         listview_hotel_comment.setOnScrollListener(this);
         String queryCommentURL = commentURL + hotelId + hotelIdIndex + nowPage + nowPageIndex;
@@ -65,7 +78,7 @@ public class HotelCommentActivity extends HaruActivity implements AbsListView.On
                 String queryCommentURL = commentURL + hotelId + hotelIdIndex + nowPage + nowPageIndex;
                 new UpDataHotelComment().execute(queryCommentURL);
             } catch (Exception e) {
-                errorToast("没有更多数据了");
+//                errorToast("没有更多数据了");
             }
         }
 
@@ -91,7 +104,7 @@ public class HotelCommentActivity extends HaruActivity implements AbsListView.On
             userComments.clear();
             userComments.addAll(userCommentList);
             if (userCommentAdapter == null) {
-                userCommentAdapter = new UserCommentAdapter(getApplicationContext(), userComments);
+                userCommentAdapter = new UserCommentAdapter(getActivity().getApplicationContext(), userComments);
                 listview_hotel_comment.setAdapter(userCommentAdapter);
             } else {
                 userCommentAdapter.notifyDataSetChanged();
@@ -115,7 +128,7 @@ public class HotelCommentActivity extends HaruActivity implements AbsListView.On
 
             userComments.addAll(userCommentList);
             if (userCommentAdapter == null) {
-                userCommentAdapter = new UserCommentAdapter(getApplicationContext(), userComments);
+                userCommentAdapter = new UserCommentAdapter(getActivity().getApplicationContext(), userComments);
                 listview_hotel_comment.setAdapter(userCommentAdapter);
             } else {
                 userCommentAdapter.notifyDataSetChanged();

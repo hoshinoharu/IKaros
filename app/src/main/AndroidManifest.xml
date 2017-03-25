@@ -67,22 +67,12 @@
         </activity>
         <activity android:name="com.reharu.ikaros.MainActivity" />
         <activity
-            android:name="com.reharu.ikaros.lingmar.QueryHotelActivity"
+            android:name="com.reharu.ikaros.lingmar.fragment.QueryHotelFragment"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name="com.reharu.ikaros.imxz.activity.TrainActivity"
+            android:name="com.reharu.ikaros.lingmar.fragment.HotelFragment"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name="com.reharu.ikaros.lingmar.HotelActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.reharu.ikaros.lingmar.HotelCommentActivity"></activity>
-        <activity
-            android:name="com.reharu.ikaros.imxz.activity.CalendarActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name="com.reharu.ikaros.imxz.activity.ChoosePlaceActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.reharu.ikaros.lingmar.fragment.HotelCommentFragment"></activity>
 
         <service
             android:name="com.baidu.location.f"

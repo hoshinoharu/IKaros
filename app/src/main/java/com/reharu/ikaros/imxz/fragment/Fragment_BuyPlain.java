@@ -2,7 +2,6 @@ package com.reharu.ikaros.imxz.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import com.reharu.ikaros.R;
  * Created by Imxz on 2017/3/21.
  */
 
-public class Fragment_BuyPlain extends Fragment {
+public class Fragment_BuyPlain extends MainFragment {
     private View mView;
     private DrawerLayout mDrawer;
 

@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context=".lingmar.HotelCommentActivity">
+    tools:context=".lingmar.fragment.HotelCommentFragment"
+    android:background="#fff"
+    >
 
     <ListView
         android:id="@+id/listview_hotel_comment"

@@ -1,21 +1,24 @@
-package com.reharu.ikaros.lingmar;
+package com.reharu.ikaros.lingmar.fragment;
 
-import android.content.Intent;
+import android.app.Activity;
+import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.reharu.harubase.base.AutoInjecter;
-import com.reharu.harubase.base.HaruActivity;
 import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
+import com.reharu.ikaros.haru.activities.HCortanaActivity;
 import com.reharu.ikaros.lingmar.adapter.RoomAdapter;
 import com.reharu.ikaros.lingmar.adapter.UserCommentAdapter;
 import com.reharu.ikaros.lingmar.domain.HotelInfo;
@@ -30,36 +33,21 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class HotelActivity extends HaruActivity {
+public class HotelFragment extends Fragment implements View.OnClickListener {
 
-    @AutoInjecter.ViewInject(R.id.toolbar_hotel_title)
+
     private CollapsingToolbarLayout toolbar_hotel_title;
-
-    @AutoInjecter.ViewInject(R.id.tv_hotel_location)
     private TextView tv_hotel_location;
-
-    @AutoInjecter.ViewInject(R.id.tv_checkin_time)
     private TextView tv_checkin_time;
-
-    @AutoInjecter.ViewInject(R.id.listview_room_list)
     private ListViewinNestScrollView listview_room_list;
-
-    @AutoInjecter.ViewInject(R.id.shs_park)
     private SettingHotelServiceIcon shs_park;
-
-    @AutoInjecter.ViewInject(R.id.shs_wifi)
     private SettingHotelServiceIcon shs_wifi;
-
-    @AutoInjecter.ViewInject(R.id.shs_restaurant)
     private SettingHotelServiceIcon shs_restaurant;
-
-    @AutoInjecter.ViewInject(R.id.shs_shower)
     private SettingHotelServiceIcon shs_shower;
-
+    private ListViewinNestScrollView listview_comment;
+    private LinearLayout linelayout_show_morecomment;
     // 停车相关的图标
     // 住户的评论
-    @AutoInjecter.ViewInject(R.id.listview_comment)
-    private ListViewinNestScrollView listview_comment;
 
     private HotelInfo hotelInfo = new HotelInfo();
     private Pattern pattern = Pattern.compile("/hotel/(.*?)/#indate=");
@@ -69,19 +57,41 @@ public class HotelActivity extends HaruActivity {
     private UserCommentAdapter userCommentAdapter;
     private List<UserComment> userCommentList;
 
-    @Override
-    public int getContentViewId() {
-        return R.layout.activity_hotel;
-    }
+    private View mView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    private HCortanaActivity cortanaActivity ;
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (mView == null) {
+            mView = inflater.inflate(R.layout.activity_hotel, null);
+            cortanaActivity = (HCortanaActivity) getActivity();
+        }
+
+        ViewGroup parent = (ViewGroup) mView.getParent();
+        if (parent != null) {
+            parent.removeView(mView);
+        }
 //        initSwipeLayout();
+        initUI();
         adapterColor();
         getPreExtra();
         initData();
+        return mView;
+    }
+
+    private void initUI() {
+        toolbar_hotel_title = (CollapsingToolbarLayout) mView.findViewById(R.id.toolbar_hotel_title);
+        tv_hotel_location = (TextView) mView.findViewById(R.id.tv_hotel_location);
+        tv_checkin_time = (TextView) mView.findViewById(R.id.tv_checkin_time);
+        listview_room_list = (ListViewinNestScrollView) mView.findViewById(R.id.listview_room_list);
+        shs_park = (SettingHotelServiceIcon) mView.findViewById(R.id.shs_park);
+        shs_wifi = (SettingHotelServiceIcon) mView.findViewById(R.id.shs_wifi);
+        shs_restaurant = (SettingHotelServiceIcon) mView.findViewById(R.id.shs_restaurant);
+        shs_shower = (SettingHotelServiceIcon) mView.findViewById(R.id.shs_shower);
+        listview_comment = (ListViewinNestScrollView) mView.findViewById(R.id.listview_comment);
+        linelayout_show_morecomment = (LinearLayout) mView.findViewById(R.id.linelayout_show_morecomment);
     }
 
     private void initData() {
@@ -98,6 +108,8 @@ public class HotelActivity extends HaruActivity {
         // 初始化住客评论列表
         String queryCommentURL = commentURL + hotelInfo.getHotelID();
         new NewUserCommentAsyncTask().execute(queryCommentURL);
+
+        linelayout_show_morecomment.setOnClickListener(this);
     }
 
     /**
@@ -151,32 +163,24 @@ public class HotelActivity extends HaruActivity {
 
     private void adapterColor() {
         //透明状态栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         //透明导航栏
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
     }
 
     public void getPreExtra() {
-        Intent intent = this.getIntent();
-        hotelInfo.setHotelName(intent.getStringExtra("hotelName"));
-        hotelInfo.setDetailPageUrl(intent.getStringExtra("detailPageUrl"));
-        hotelInfo.setHotelID(getHotelID(hotelInfo.getDetailPageUrl()));
+//        Intent intent = getActivity().getIntent();
+//        hotelInfo.setHotelName(intent.getStringExtra("hotelName"));
+//        hotelInfo.setDetailPageUrl(intent.getStringExtra("detailPageUrl"));
+            if(getArguments() != null){
+                hotelInfo.setHotelName(getArguments().getString("hotelName"));
+                hotelInfo.setDetailPageUrl(getArguments().getString("detailPageUrl"));
+                hotelInfo.setHotelID(getHotelID(hotelInfo.getDetailPageUrl()));
+            }
 
 //        Log.d("123", "hotelID " + hotelInfo.getHotelID());
 //        Log.d("123", "detailPageUrl " + hotelInfo.getDetailPageUrl());
 //        Log.d("123", "hotelName" + hotelInfo.getHotelName());
-    }
-
-    /**
-     * 点击查看更多按钮，跳转到评论的详细界面
-     *
-     * @param view
-     */
-    public void showMoreComment(View view) {
-        Intent intent = new Intent(this, HotelCommentActivity.class);
-        intent.putExtra("hotelID", hotelInfo.getHotelID());
-        startActivity(intent);
-        overridePendingTransition(R.animator.anim_hotel_in, R.animator.anim_hotel_out);
     }
 
     /**
@@ -219,6 +223,24 @@ public class HotelActivity extends HaruActivity {
     }
 
     /**
+     * 点击查看更多按钮，跳转到评论的详细界面
+     *
+     * @param view
+     */
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.linelayout_show_morecomment:
+                if (hotelInfo.getRooms() != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("hotelID", hotelInfo.getHotelID());
+                    cortanaActivity.startFragment(HotelCommentFragment.class, bundle);
+                }
+                break;
+        }
+    }
+
+    /**
      * 初始化客房列表
      */
     class NewRoomAsyncTask extends AsyncTask<String, Void, HotelInfo> {
@@ -248,13 +270,16 @@ public class HotelActivity extends HaruActivity {
             initHotelPage();
 
             Log.d("123", "onPostExecute getRooms: " + hotelInfo.getRooms().toString());
+            Activity activity = getActivity() ;
             // 初始化客房列表
-            if (roomAdapter == null) {
-                roomAdapter = new RoomAdapter(getApplicationContext(), hotelInfo.getRooms());
-                listview_room_list.setAdapter(roomAdapter);
-                setListViewHeightBasedOnChildren(listview_room_list);
-            } else {
-                roomAdapter.notifyDataSetChanged();
+            if(activity != null){
+                if (roomAdapter == null) {
+                    roomAdapter = new RoomAdapter(activity.getApplicationContext(), hotelInfo.getRooms());
+                    listview_room_list.setAdapter(roomAdapter);
+                    setListViewHeightBasedOnChildren(listview_room_list);
+                } else {
+                    roomAdapter.notifyDataSetChanged();
+                }
             }
 
 //            swipe_room_layout.setRefreshing(false);
@@ -277,23 +302,18 @@ public class HotelActivity extends HaruActivity {
 
             userCommentList.clear();
             userCommentList.addAll(userComments);
+            Activity activity = getActivity() ;
             // Adapter展示用户评论
-            if (userCommentAdapter == null) {
-                userCommentAdapter = new UserCommentAdapter(getApplicationContext(), userCommentList);
-                HLog.d("123", "userCommentList: " + userCommentList.size());
-                listview_comment.setAdapter(userCommentAdapter);
-                setListViewHeightBasedOnChildren(listview_comment);
-            } else {
-                userCommentAdapter.notifyDataSetChanged();
+            if(activity != null){
+                if (userCommentAdapter == null) {
+                    userCommentAdapter = new UserCommentAdapter(activity.getApplicationContext(), userCommentList);
+                    HLog.d("123", "userCommentList: " + userCommentList.size());
+                    listview_comment.setAdapter(userCommentAdapter);
+                    setListViewHeightBasedOnChildren(listview_comment);
+                } else {
+                    userCommentAdapter.notifyDataSetChanged();
+                }
             }
         }
-    }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, QueryHotelActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.animator.anim_back_hotel_in, R.animator.anim_back_hotel_out);
-        finish();
     }
 }

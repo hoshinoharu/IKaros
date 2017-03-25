@@ -72,8 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:scrollbars="none"
-        ></com.reharu.ikaros.lingmar.view.ListViewinNestScrollView>
+        android:scrollbars="none"></com.reharu.ikaros.lingmar.view.ListViewinNestScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,8 +82,7 @@
         android:orientation="horizontal"
         android:padding="5dp">
 
-        <com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon
-            xmlns:IKaros="http://schemas.android.com/apk/res/com.reharu.ikaros"
+        <com.reharu.ikaros.lingmar.view.SettingHotelServiceIcon xmlns:IKaros="http://schemas.android.com/apk/res/com.reharu.ikaros"
             android:id="@+id/shs_park"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -142,10 +140,10 @@
         android:layout_height="wrap_content"></com.reharu.ikaros.lingmar.view.ListViewinNestScrollView>
 
     <LinearLayout
+        android:id="@+id/linelayout_show_morecomment"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
-        android:onClick="showMoreComment"
         android:orientation="horizontal">
 
         <TextView
@@ -154,4 +152,14 @@
             android:layout_gravity="center"
             android:text="查看全部" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="顶楼上" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="顶楼上" />
 </LinearLayout>
