@@ -12,4 +12,5 @@
     <string name="hunkonw_error">出现了未知错误</string>
     <string name="tuling_host">http://www.tuling123.com/openapi/api?</string>
     <string name="appid">58d38645</string>
+    <string name="server_error">服务器可能出错了哦</string>
 </resources>

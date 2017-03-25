@@ -195,12 +195,42 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     private void initIcon() {
         int topMaxIcon = 4 ;
         List<OpIcon> iconList = Arrays.asList(
-                    new OpIcon(R.drawable.ic_alarm, "准点提醒"),
-                    new OpIcon(R.drawable.ic_hotel, "酒店住宿", QueryHotelFragment.class),
-                    new OpIcon(R.drawable.ic_plane, "机票车票", Fragment_Main.fragms[5]),
-                    new OpIcon(R.drawable.ic_loc, "地理位置"),
-                    new OpIcon(R.drawable.ic_weather, "天气预报"),
-                    new OpIcon(R.drawable.ic_shopping, "购物剁手")
+                    new OpIcon(R.drawable.ic_alarm, "准点提醒", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onError();
+                        }
+                    }),
+                    new OpIcon(R.drawable.ic_hotel, "酒店住宿", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startFragment(QueryHotelFragment.class);
+                        }
+                    }),
+                    new OpIcon(R.drawable.ic_plane, "机票车票", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startFragment(Fragment_Main.fragms[5]);
+                        }
+                    }),
+                    new OpIcon(R.drawable.ic_loc, "地理位置", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            queryLoc();
+                        }
+                    }),
+                    new OpIcon(R.drawable.ic_weather, "天气预报", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            preQueryWeather();
+                        }
+                    }),
+                    new OpIcon(R.drawable.ic_shopping, "购物剁手", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onError();
+                        }
+                    })
                 );
         List<OpIcon> topList  =iconList.subList(0, topMaxIcon) ;
         if(iconList.size() > 4){
@@ -229,8 +259,6 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
         LocationGetter.init(this);
         SpeechTool.init(this, getString(R.string.appid));
-
-        queryLoc();
 
         inflateUI();
         //初始化出场动画
@@ -303,24 +331,48 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     private void onCreateOperateInterface() {
         ActivityTool.getRootView(HCortanaActivity.this).bringChildToFront(cortanaInterface);
         cortanaInterface.setBackgroundColor(Color.parseColor("#00000000"));
-        showWelcomeMessage();
     }
 
     private void queryLoc(){
-        LocationGetter.getLoc(new LocationGetter.ResponseListener(){
-            @Override
-            public void onResponse(Location location) {
-                mainlocation = location ;
-                if(location.isSuccess){
-                    queryWeather();
-                }else {
-                    showWelcomeMessage();
+        if(mainlocation == null) {
+            LocationGetter.getLoc(new LocationGetter.ResponseListener() {
+                @Override
+                public void onResponse(Location location) {
+                    mainlocation = location;
+                    if (location.isSuccess) {
+                        cortana.speak(new SpeackContent(Feeling.HAPPY, "现在主人的位置是:" + location.getLoc()));
+                    } else {
+                        cortana.reportError(getString(R.string.server_error));
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            cortana.speak(new SpeackContent(Feeling.HAPPY, "现在主人的位置是:" + mainlocation.getLoc()));
+        }
     }
 
-    public void queryWeather(){
+    public void preQueryWeather(){
+        if(mainlocation == null){
+            LocationGetter.getLoc(new LocationGetter.ResponseListener() {
+                @Override
+                public void onResponse(Location location) {
+                    mainlocation = location ;
+                    if(location.isSuccess){
+                        queryWeather();
+                    }else {
+                        cortana.reportError(getString(R.string.server_error));
+                    }
+                }
+            });
+        }else {
+            queryWeather();
+        }
+    }
+
+    private void queryWeather(){
+        if(mainlocation == null){
+            return;
+        }
         WeatherService.get().queryNow(mainlocation.cityName, new OKHttpTool.HCallBack<Weather>() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -337,17 +389,17 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
             @Override
             public void onResponse(Call call, Weather weather) {
                 locWeather = weather ;
-                showWelcomeMessage();
+                cortana.speak(new SpeackContent(Feeling.HAPPY, "主人现在的天气是:\n"+weather.spInfo()));
             }
 
             @Override
             public void onFail(Call call, Exception e) {
                 HLog.ex("TAG", e);
-                showWelcomeMessage();
+                cortana.reportError(getString(R.string.server_error));
             }
         });
-
     }
+
     protected void onCreatedCortanaInterface() {
         cortana = cortanaScene.getCortana();
         initView();
@@ -419,10 +471,15 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     }
 
 
-    public void talkToCortana(CharSequence msg){
-        inputText.setText("");
-        recordAdapter.addRecord(new ChartRecord(msg, ChartRecord.MASTER));
-        cortana.getMessage(msg);
+    public void talkToCortana(final CharSequence msg){
+        Constant.MainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                inputText.setText("");
+                recordAdapter.addRecord(new ChartRecord(msg, ChartRecord.MASTER));
+                cortana.getMessage(msg);
+            }
+        }) ;
     }
 
     public boolean verifyInput(){
@@ -434,7 +491,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
         }
     }
 
-    private void showWelcomeMessage(){
+    private void showWelcomeMessa(){
         //判断是否调用两次，调用两次表示小娜已经加载完毕天气也已经查询到
         initTimes++ ;
         if(initTimes >= allInitTimes){

@@ -10,5 +10,9 @@ public class Location {
     public String cityCode ;
     public String cityName ;
     public String province ;
-    public String conuntry ;
+    public String country;
+
+    public String getLoc(){
+        return country + province+ cityName ;
+    }
 }

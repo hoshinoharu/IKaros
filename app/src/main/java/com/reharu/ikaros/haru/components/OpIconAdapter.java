@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.reharu.harubase.base.AutoInjecter;
 import com.reharu.harubase.base.HaruViewHolder;
-import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
 import com.reharu.ikaros.haru.activities.HCortanaActivity;
 import com.reharu.ikaros.haru.cortana.dto.OpIcon;
@@ -102,19 +101,7 @@ public class OpIconAdapter extends BaseAdapter {
             });
         }
         ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-        viewHolder.getContent().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (opIcon.getJumpMode() == OpIcon.CLASS) {
-                    owner.startFragment(opIcon.fragCls);
-                } else if (opIcon.getJumpMode() == opIcon.OBJECT) {
-                    owner.startFragment(opIcon.frag);
-                } else {
-                    HLog.e("TAG", "onError'");
-                    onError();
-                }
-            }
-        });
+        viewHolder.getContent().setOnClickListener(opIcon.clickListener);
         viewHolder.icon.setImageResource(opIcon.imgId);
         viewHolder.desc.setText(opIcon.desc);
         return convertView;

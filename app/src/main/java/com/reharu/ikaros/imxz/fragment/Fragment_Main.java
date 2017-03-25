@@ -29,7 +29,7 @@ import java.util.List;
  * Created by Imxz on 2017/3/21.
  */
 
-public class Fragment_Main extends Fragment implements View.OnClickListener {
+public class Fragment_Main extends MainFragment implements View.OnClickListener {
 
     private static ListView mListView;
     private static SwipeRefreshLayout mRefresh;
@@ -77,6 +77,7 @@ public class Fragment_Main extends Fragment implements View.OnClickListener {
     private void initAction() {
         mFmanager = getActivity().getFragmentManager();
         mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[1]).commit();
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

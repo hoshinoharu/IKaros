@@ -73,7 +73,7 @@ public class LocationGetter {
                     location.cityCode = bdLocation.getCityCode() ;
                     location.cityName = bdLocation.getCity() ;
                     location.province = bdLocation.getProvince() ;
-                    location.conuntry = bdLocation.getCountry() ;
+                    location.country = bdLocation.getCountry() ;
                 }else {
                     location.isSuccess = false ;
                 }
