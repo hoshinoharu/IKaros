@@ -1,7 +1,8 @@
 package com.reharu.ikaros.imxz.fragment;
 
 import android.app.Fragment;
-import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.reharu.ikaros.haru.activities.HCortanaActivity;
 
@@ -13,9 +14,16 @@ public class MainFragment extends Fragment {
 
     protected HCortanaActivity cortanaActivity ;
 
+
     @Override
-    public void onAttach(Context context) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         cortanaActivity = (HCortanaActivity) getActivity();
-        super.onAttach(context);
+        super.onCreate(savedInstanceState);
+    }
+
+    protected void finish(){
+        if(this.isVisible()) {
+            cortanaActivity.popFragmentBackStack();
+        }
     }
 }

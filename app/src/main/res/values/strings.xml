@@ -13,4 +13,6 @@
     <string name="tuling_host">http://www.tuling123.com/openapi/api?</string>
     <string name="appid">58d38645</string>
     <string name="server_error">服务器可能出错了哦</string>
+    <string name="action_getCityId">http://imxz.cn/api/getHotelId.php?cityName=</string>
+    <string name="tuling_train_resp">http://touch.qunar.com/h5/train/trainList\\?.*?</string>
 </resources>

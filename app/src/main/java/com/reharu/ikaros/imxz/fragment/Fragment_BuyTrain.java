@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
+import com.reharu.ikaros.haru.activities.HCortanaActivity;
 import com.reharu.ikaros.imxz.listener.OnChooseCoP;
 
 import java.text.SimpleDateFormat;
@@ -45,6 +46,10 @@ public class Fragment_BuyTrain extends MainFragment implements OnChooseCoP {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM月dd日");
     private static final SimpleDateFormat sdfWeek = new SimpleDateFormat("EEEE");
 
+
+    private HCortanaActivity cortanaActivity ;
+
+
     private void initViewByParent() {
         mDrawer = (DrawerLayout) getActivity().findViewById(R.id.drawer_layout);
     }
@@ -58,7 +63,7 @@ public class Fragment_BuyTrain extends MainFragment implements OnChooseCoP {
             initViewAction();
             initData();
         }
-
+        cortanaActivity = (HCortanaActivity) getActivity();
         ViewGroup parent = (ViewGroup) mView.getParent();
         if (parent != null) {
             parent.removeView(mView);
@@ -114,7 +119,6 @@ public class Fragment_BuyTrain extends MainFragment implements OnChooseCoP {
             }
         });
 
-
     }
 
 
@@ -135,4 +139,6 @@ public class Fragment_BuyTrain extends MainFragment implements OnChooseCoP {
             }
         }
     }
+
+
 }

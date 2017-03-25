@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.reharu.harubase.tools.Constant;
 import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
 import com.reharu.ikaros.haru.activities.HCortanaActivity;
@@ -30,12 +31,19 @@ import com.reharu.ikaros.lingmar.adapter.HotelItemAdapter;
 import com.reharu.ikaros.lingmar.adapter.PosPointAdapter;
 import com.reharu.ikaros.lingmar.domain.Hotel;
 import com.reharu.ikaros.lingmar.domain.PosPoint;
+import com.reharu.ikaros.lingmar.service.CityService;
 import com.reharu.ikaros.lingmar.utils.JSONTool;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Call;
+import okhttp3.Response;
+
 public class QueryHotelFragment extends Fragment {
+
+    public static final String CITY_NAME = "cityName" ;
 
 
     private TextView tv_city_titel;
@@ -81,10 +89,39 @@ public class QueryHotelFragment extends Fragment {
         }
 
         initUI();
+        initBundle();
 //        adaptColor();
         initData();
         drawerListener();
         return mView;
+    }
+
+    private void initBundle() {
+        Bundle bundle = getArguments() ;
+       if(bundle != null){
+           String cityName = bundle.getString(CITY_NAME);
+           CityService.getCityId(cityName, new okhttp3.Callback(){
+
+               @Override
+               public void onFailure(Call call, IOException e) {
+
+               }
+
+               @Override
+               public void onResponse(Call call, Response response) throws IOException {
+                   String resp = response.body().string();
+                   String queryURL = hotelURL + cityId + resp ;
+                   HLog.e("TAG", queryURL);
+                   Constant.MainHandler.post(new Runnable() {
+                       @Override
+                       public void run() {
+                           swipeLayout.setRefreshing(true);
+                       }
+                   }) ;
+                   new NewHotelAsyncTask().execute(queryURL);
+               }
+           });
+       }
     }
 
     private void initUI() {
@@ -97,7 +134,6 @@ public class QueryHotelFragment extends Fragment {
         iv_queryCity = (ImageView) mView.findViewById(R.id.iv_queryCity);
         listview_AutoComplete = (ListView) mView.findViewById(R.id.listview_AutoComplete);
         drawerLeft = mView.findViewById(R.id.drawer_left_layout);
-
         tv_city_titel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -253,7 +289,6 @@ public class QueryHotelFragment extends Fragment {
                 } else {
                     tv_city_titel.setText(keyWord);
                 }
-
                 swipeLayout.setRefreshing(true);
                 new NewHotelAsyncTask().execute(queryURL);
             }
@@ -294,7 +329,6 @@ public class QueryHotelFragment extends Fragment {
         @Override
         protected void onPostExecute(List<Hotel> hotels) {
             super.onPostExecute(hotels);
-
             // 使用同一对象
             hotelList.addAll(hotels);
             // 展示宾馆item
@@ -319,8 +353,6 @@ public class QueryHotelFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Hotel> hotels) {
-            super.onPostExecute(hotels);
-
             swipeLayout.setRefreshing(false);
             // 使用同一对象
             hotelList.clear();

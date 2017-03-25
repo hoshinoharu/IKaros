@@ -118,6 +118,6 @@ public class Fragment_ChoosePlace extends MainFragment implements View.OnClickLi
         intent.putExtra("Place", tvName);
         intent.putExtra("FromTo", fromTo);
         ((OnChooseCoP) Fragment_Main.fragms[1]).setChooseContent(intent);
-        cortanaActivity.startFragment(Fragment_Main.fragms[5]);
+        finish();
     }
 }

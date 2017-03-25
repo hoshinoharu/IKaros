@@ -44,7 +44,6 @@ public class Cortana extends Layer {
 
     private Feeling feeling ;
 
-    private TulingRespHandler tulingRespHandler ;
 
     private CortanaAnimResManager animResManager ;
 
@@ -53,12 +52,6 @@ public class Cortana extends Layer {
         this.animResManager = new CortanaAnimResManager(this) ;
         this.setIgnoreTouch(false);
         this.setHeight(ScreenTool.getScreenSize().heightPixels/2);
-
-        //初始化
-        this.addCortanaListener(new CortanaFeelingController(animResManager));
-        this.addCortanaListener(new TulingRespHandler(this));
-
-        this.tulingRespHandler = new TulingRespHandler(this) ;
 
         init(animResManager.getAllAnimations());
     }
@@ -174,6 +167,7 @@ public class Cortana extends Layer {
 
     public void welcome() {
         cortanaAnimate(animResManager.getApperaAnimation(), false);
+        nextCortanaAnimate(animResManager.getNormalAnimation(), true);
         changeFeeling(Feeling.NORMAL);
     }
 
@@ -192,6 +186,9 @@ public class Cortana extends Layer {
         }
     }
 
+    public void addCortanaListener(CortanaListener cortanaListener, int index) {
+        this.cortanaListenerList.add(index,cortanaListener) ;
+    }
     public void addCortanaListener(CortanaListener cortanaListener) {
         this.cortanaListenerList.add(cortanaListener) ;
     }
@@ -208,7 +205,9 @@ public class Cortana extends Layer {
     private void onGetMessage(CharSequence msg) {
         if(msg != null){
             for(CortanaListener cortanaListener : cortanaListenerList){
-                cortanaListener.onGetMessage(msg.toString());
+                if(cortanaListener.onInterceptGetMessage(msg.toString())){
+                    return;
+                }
             }
         }
     }
@@ -241,5 +240,9 @@ public class Cortana extends Layer {
 
     public void reportError(String error) {
         onError(error);
+    }
+
+    public CortanaAnimResManager getAnimResManager() {
+        return animResManager;
     }
 }

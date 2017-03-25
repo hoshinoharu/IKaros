@@ -1,6 +1,5 @@
 package com.reharu.ikaros.imxz.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.reharu.ikaros.R;
-import com.reharu.ikaros.imxz.listener.OnChooseCoP;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -72,14 +70,15 @@ public class Fragment_Calendar extends MainFragment implements OnDateSelectedLis
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        Intent mIntent = new Intent();
-        mIntent.putExtra("flag", "Calendar");
-        mIntent.putExtra("date", simpleDateFormat.format(date.getDate()));
-        mIntent.putExtra("week", sdfWeek.format(date.getDate()));
-        mIntent.putExtra("month", date.getMonth());
-        mIntent.putExtra("day", date.getDay() + "");
-        ((OnChooseCoP) Fragment_Main.fragms[1]).setChooseContent(mIntent);
-        cortanaActivity.startFragment(Fragment_Main.fragms[5]);
+        Bundle mIntent = new Bundle();
+        mIntent.putString("flag", "Calendar");
+        mIntent.putString("date", simpleDateFormat.format(date.getDate()));
+        mIntent.putString("week", sdfWeek.format(date.getDate()));
+        mIntent.putString("month", date.getMonth()+"");
+        mIntent.putString("day", date.getDay() + "");
+
+        //((OnChooseCoP) Fragment_Main.fragms[1]).setChooseContent(mIntent);
+        //finish();
     }
 
 

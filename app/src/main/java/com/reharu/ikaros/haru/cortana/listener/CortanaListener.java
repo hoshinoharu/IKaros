@@ -31,9 +31,10 @@ public interface CortanaListener{
          }
 
          @Override
-         public void onGetMessage(String message) {
-
+         public boolean onInterceptGetMessage(String message) {
+            return  false ;
          }
+
      }
 
     void onApperance(Cortana cortana) ;
@@ -44,5 +45,5 @@ public interface CortanaListener{
 
     void onTouch(Cortana cortana) ;
 
-    void onGetMessage(String message) ;
+    boolean onInterceptGetMessage(String message) ;
 }

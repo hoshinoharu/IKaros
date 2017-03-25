@@ -2,6 +2,7 @@ package com.reharu.ikaros.imxz.Utils;
 
 import android.util.Log;
 
+import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.imxz.entity.Place;
 import com.reharu.ikaros.imxz.entity.StationInfo;
 
@@ -34,7 +35,12 @@ public class TrainInfo {
     }
 
     public static List<StationInfo> getStationsInfo(String howDate, String fromPlace, String toPlace) {
-        String url = getUrlToReplace(howDate, fromPlace, toPlace);
+        return getStationsInfo(getUrlToReplace(howDate, fromPlace, toPlace)) ;
+    }
+
+    //修改
+    public static List<StationInfo> getStationsInfo(String url){
+        HLog.e("TAG", "queryUrl" , url);
         Request.Builder builder = new Request.Builder().url(url);
         builder.addHeader("User-Agent", "Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/603.1.30 (KHTML, like Gecko) Mobile/14E5260b QQ/6.7.0.446 V1_IPH_SQ_6.7.0_1_APP_A Pixel/640 Core/UIWebView NetType/WIFI");
         try {
@@ -51,6 +57,8 @@ public class TrainInfo {
             return null;
         }
     }
+    //----
+
 
 
     public static List<Place> getPlacesInfo() {

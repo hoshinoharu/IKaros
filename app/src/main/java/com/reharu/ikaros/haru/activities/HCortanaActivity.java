@@ -43,11 +43,14 @@ import com.reharu.harubase.tools.StreamTool;
 import com.reharu.ikaros.R;
 import com.reharu.ikaros.haru.components.HaruCoordinatorLayout;
 import com.reharu.ikaros.haru.components.OpIconAdapter;
+import com.reharu.ikaros.haru.cortana.CortanaFeelingController;
+import com.reharu.ikaros.haru.cortana.OrderDispatcher;
 import com.reharu.ikaros.haru.components.SpeackVolumeChangeListener;
 import com.reharu.ikaros.haru.components.SpeakVolumeDialog;
 import com.reharu.ikaros.haru.cortana.Cortana;
 import com.reharu.ikaros.haru.cortana.CortanaAnimResManager;
 import com.reharu.ikaros.haru.cortana.SoundMannager;
+import com.reharu.ikaros.haru.cortana.TulingRespHandler;
 import com.reharu.ikaros.haru.cortana.adapter.ChartRecordaAdapter;
 import com.reharu.ikaros.haru.cortana.behavior.Feeling;
 import com.reharu.ikaros.haru.cortana.dto.ChartRecord;
@@ -294,6 +297,8 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
             if(bundle != null){
                 fragment.setArguments(bundle);
             }
+            HLog.e("TAG", fragment.isHidden());
+            fragment.setUserVisibleHint(true);
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
             fragmentTransaction.add(R.id.fragmentContent, fragment);
@@ -334,12 +339,16 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     }
 
     private void queryLoc(){
+        if(cortana == null){
+            return;
+        }
         if(mainlocation == null) {
             LocationGetter.getLoc(new LocationGetter.ResponseListener() {
                 @Override
                 public void onResponse(Location location) {
                     mainlocation = location;
                     if (location.isSuccess) {
+                        HLog.e("TAG", location);
                         cortana.speak(new SpeackContent(Feeling.HAPPY, "现在主人的位置是:" + location.getLoc()));
                     } else {
                         cortana.reportError(getString(R.string.server_error));
@@ -352,6 +361,9 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     }
 
     public void preQueryWeather(){
+        if(cortana == null){
+            return;
+        }
         if(mainlocation == null){
             LocationGetter.getLoc(new LocationGetter.ResponseListener() {
                 @Override
@@ -402,18 +414,24 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
     protected void onCreatedCortanaInterface() {
         cortana = cortanaScene.getCortana();
+        initController();
         initView();
         //初始化监听
         initListener();
     }
 
-
+    private void initController() {
+        //初始化
+        cortana.addCortanaListener(new CortanaFeelingController(cortana.getAnimResManager()));
+        cortana.addCortanaListener(new TulingRespHandler(cortana, this));
+    }
 
 
     private void initView() {
         recordAdapter = new ChartRecordaAdapter(chartRecordList, new ArrayList<ChartRecord>()) ;
         chartRecordList.setAdapter(recordAdapter);
     }
+
 
     private void initListener() {
 
@@ -428,6 +446,9 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
                 }) ;
             }
         });
+
+        cortana.addCortanaListener(new OrderDispatcher(this), 0);
+
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -518,11 +539,19 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            if(getFragmentManager().getBackStackEntryCount() >= 1) {
-                getFragmentManager().popBackStack() ;
-                return true;
+            if( popFragmentBackStack() ){
+                return true ;
             }
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    public boolean popFragmentBackStack(){
+        if(getFragmentManager().getBackStackEntryCount() >= 1) {
+            getFragmentManager().popBackStack() ;
+            return true;
+        }
+        return false ;
+    }
+
 }

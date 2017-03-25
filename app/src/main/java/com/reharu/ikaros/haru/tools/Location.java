@@ -15,4 +15,16 @@ public class Location {
     public String getLoc(){
         return country + province+ cityName ;
     }
+
+    @Override
+    public String toString() {
+        return "Location{" +
+                "isSuccess=" + isSuccess +
+                ", respCode=" + respCode +
+                ", cityCode='" + cityCode + '\'' +
+                ", cityName='" + cityName + '\'' +
+                ", province='" + province + '\'' +
+                ", country='" + country + '\'' +
+                '}';
+    }
 }

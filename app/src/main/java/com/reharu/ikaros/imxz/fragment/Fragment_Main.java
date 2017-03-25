@@ -44,8 +44,10 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
     private static String chooseDate;
     private static String startWay;
     private static String endWay;
+
     public static final Fragment[] fragms = {new Fragment_BuyPlain(), new Fragment_BuyTrain(), new Fragment_BuyBus(), new Fragment_Calendar(), new Fragment_ChoosePlace(), new Fragment_Main()};
 
+    public static final String QUERY_URL = "queryUrl";
     private View mView;
 
     private void initView() {
@@ -57,7 +59,6 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
         drawer_layout = (DrawerLayout) mView.findViewById(R.id.drawer_layout);
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,7 +66,10 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
             mView = inflater.inflate(R.layout.trainaty_layout, null);
             initView();
         }
+
         initAction();
+        initBundle();
+
         ViewGroup parent = (ViewGroup) mView.getParent();
         if (parent != null) {
             parent.removeView(mView);
@@ -73,8 +77,19 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
         return mView;
     }
 
+    private void initBundle() {
+        Bundle bundle = this.getArguments() ;
+        if(bundle != null){
+            String url = bundle.getString(QUERY_URL, null);
+            if(url != null){
+                refreshStationInfo(url);
+            }
+        }
+    }
+
 
     private void initAction() {
+
         mFmanager = getActivity().getFragmentManager();
         mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[1]).commit();
 
@@ -124,7 +139,7 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
 
 
     public static void reFreshStationInfo(final String data, final String fromPlace, final String toPlace) {
-        AsyncTask<Void, Void, List<StationInfo>> asyncTask = new AsyncTask<Void, Void, List<StationInfo>>() {
+            new AsyncTask<Void, Void, List<StationInfo>>() {
 
             @Override
             protected void onPreExecute() {
@@ -142,19 +157,51 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
 
             @Override
             protected void onPostExecute(List<StationInfo> stationInfos) {
-                if (stationInfos == null || stationInfos.size() == 0) {
-                    Toast.makeText(HaruApp.context(), "未检索到车票.", Toast.LENGTH_SHORT).show();
-                    mAdapter = new TrainAdapter(stationInfos);
-                    mListView.setAdapter(mAdapter);
-                } else {
-                    mAdapter = new TrainAdapter(stationInfos);
-                    mListView.setAdapter(mAdapter);
-                }
-
-                mRefresh.setRefreshing(false);
+                showStationInfo(stationInfos);
             }
         }.execute();
     }
+    //修改
+    /*根据图灵返回的url查询*/
+    public void refreshStationInfo(final String url){
+        new AsyncTask<Void, Void, List<StationInfo>>() {
+
+            @Override
+            protected void onPreExecute() {
+                mRefresh.setRefreshing(true);
+            }
+
+            @Override
+            protected List<StationInfo> doInBackground(Void... params) {
+                //替换图灵url
+                String realUrl = url.replaceFirst(".*\\?", "http://touch.train.qunar.com/api/train/trains2s?") ;
+                realUrl = realUrl.replaceFirst("&sort=.*", "&bd_source=qunar&filterNewDepTimeRange=00%3A00-24%3A00&filterNewArrTimeRange=00%3A00-24%3A00");
+                HLog.e("TAG", realUrl);
+                List<StationInfo> stationsInfos = TrainInfo.getStationsInfo(realUrl);
+                return stationsInfos;
+            }
+
+            @Override
+            protected void onPostExecute(List<StationInfo> stationInfos) {
+                showStationInfo(stationInfos);
+            }
+        }.execute();
+    }
+
+
+    public static void showStationInfo(List<StationInfo> stationInfos){
+        if (stationInfos == null || stationInfos.size() == 0) {
+            Toast.makeText(HaruApp.context(), "未检索到车票.", Toast.LENGTH_SHORT).show();
+            mAdapter = new TrainAdapter(stationInfos);
+            mListView.setAdapter(mAdapter);
+        } else {
+            mAdapter = new TrainAdapter(stationInfos);
+            mListView.setAdapter(mAdapter);
+        }
+
+        mRefresh.setRefreshing(false);
+    }
+    //
 
 
     public static void closeDrawer() {
