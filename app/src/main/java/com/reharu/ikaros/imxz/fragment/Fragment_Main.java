@@ -51,6 +51,11 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
 
     private View mView;
 
+    private int status ;
+    private static final int STATUS_PLANE = 0 ;
+    private static final int STATUS_TRAIN = 1 ;
+    private static final int STATUS_BUS = 2;
+
     private void initView() {
         mListView = (ListView) mView.findViewById(R.id.lv_train_infos);
         mRefresh = (SwipeRefreshLayout) mView.findViewById(R.id.srl_refresh);
@@ -68,7 +73,6 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
             initView();
             initAction();
         }
-
         initBundle();
 //        initAction();
 //        ViewGroup parent = (ViewGroup) mView.getParent();
@@ -93,7 +97,7 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
 
         mFmanager = getActivity().getFragmentManager();
         mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[1]).commit();
-
+        status = STATUS_TRAIN ;
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -124,15 +128,24 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_buyPlain: {
-                mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[0]).commit();
+                if(status != STATUS_PLANE){
+                    mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[0]).commit();
+                    status = STATUS_PLANE ;
+                }
             }
             break;
             case R.id.btn_buyTrain: {
-                mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[1]).commit();
+                if(status != STATUS_TRAIN) {
+                    mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[1]).commit();
+                    status = STATUS_TRAIN ;
+                }
             }
             break;
             case R.id.btn_buyBus: {
-                mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[2]).commit();
+                if(status != STATUS_BUS) {
+                    mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[2]).commit();
+                    status = STATUS_BUS ;
+                }
             }
             break;
         }
