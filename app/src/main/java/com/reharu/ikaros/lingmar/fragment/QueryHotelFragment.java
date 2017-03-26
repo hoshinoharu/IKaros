@@ -27,6 +27,8 @@ import com.reharu.harubase.tools.Constant;
 import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
 import com.reharu.ikaros.haru.activities.HCortanaActivity;
+import com.reharu.ikaros.haru.tools.Location;
+import com.reharu.ikaros.haru.tools.LocationGetter;
 import com.reharu.ikaros.lingmar.adapter.HotelItemAdapter;
 import com.reharu.ikaros.lingmar.adapter.PosPointAdapter;
 import com.reharu.ikaros.lingmar.domain.Hotel;
@@ -100,28 +102,41 @@ public class QueryHotelFragment extends Fragment {
         Bundle bundle = getArguments() ;
        if(bundle != null){
            String cityName = bundle.getString(CITY_NAME);
-           CityService.getCityId(cityName, new okhttp3.Callback(){
-
+           queryCity(cityName);
+       }else {
+           LocationGetter.getLoc(new LocationGetter.ResponseListener() {
                @Override
-               public void onFailure(Call call, IOException e) {
-
-               }
-
-               @Override
-               public void onResponse(Call call, Response response) throws IOException {
-                   String resp = response.body().string();
-                   String queryURL = hotelURL + cityId + resp ;
-                   HLog.e("TAG", queryURL);
-                   Constant.MainHandler.post(new Runnable() {
-                       @Override
-                       public void run() {
-                           swipeLayout.setRefreshing(true);
-                       }
-                   }) ;
-                   new NewHotelAsyncTask().execute(queryURL);
+               public void onResponse(Location location) {
+                   if(location.isSuccess){
+                       queryCity(location.cityName);
+                   }
                }
            });
        }
+    }
+
+    private void queryCity(String cityName){
+        CityService.getCityId(cityName, new okhttp3.Callback(){
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String resp = response.body().string();
+                String queryURL = hotelURL + cityId + resp ;
+                HLog.e("TAG", queryURL);
+                Constant.MainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeLayout.setRefreshing(true);
+                    }
+                }) ;
+                new NewHotelAsyncTask().execute(queryURL);
+            }
+        });
     }
 
     private void initUI() {
