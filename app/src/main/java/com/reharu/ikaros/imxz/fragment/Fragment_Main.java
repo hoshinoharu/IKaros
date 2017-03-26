@@ -48,6 +48,7 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
     public static final Fragment[] fragms = {new Fragment_BuyPlain(), new Fragment_BuyTrain(), new Fragment_BuyBus(), new Fragment_Calendar(), new Fragment_ChoosePlace(), new Fragment_Main()};
 
     public static final String QUERY_URL = "queryUrl";
+
     private View mView;
 
     private void initView() {
@@ -65,15 +66,15 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
         if (mView == null) {
             mView = inflater.inflate(R.layout.trainaty_layout, null);
             initView();
+            initAction();
         }
 
-        initAction();
         initBundle();
-
-        ViewGroup parent = (ViewGroup) mView.getParent();
-        if (parent != null) {
-            parent.removeView(mView);
-        }
+//        initAction();
+//        ViewGroup parent = (ViewGroup) mView.getParent();
+//        if (parent != null) {
+//            parent.removeView(mView);
+//        }
         return mView;
     }
 
@@ -207,6 +208,5 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
     public static void closeDrawer() {
         drawer_layout.closeDrawers();
     }
-
 
 }

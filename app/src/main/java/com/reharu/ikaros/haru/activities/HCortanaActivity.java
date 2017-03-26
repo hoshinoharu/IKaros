@@ -539,7 +539,8 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-            if( popFragmentBackStack() ){
+            if(popFragmentBackStack()){
+                HLog.e("TAG","popSth");
                 return true ;
             }
         }
@@ -547,11 +548,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     }
 
     public boolean popFragmentBackStack(){
-        if(getFragmentManager().getBackStackEntryCount() >= 1) {
-            getFragmentManager().popBackStack() ;
-            return true;
-        }
-        return false ;
+        return getFragmentManager().popBackStackImmediate() ;
     }
 
 }
