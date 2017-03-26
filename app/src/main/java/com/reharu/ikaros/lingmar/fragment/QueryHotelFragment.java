@@ -84,13 +84,13 @@ public class QueryHotelFragment extends Fragment {
         if (mView == null) {
             mView = inflater.inflate(R.layout.activity_query_hotel, null);
             cortanaActivity = (HCortanaActivity) getActivity();
+            initUI();
         }
         ViewGroup parent = (ViewGroup) mView.getParent();
         if (parent != null) {
             parent.removeView(mView);
         }
 
-        initUI();
         initBundle();
 //        adaptColor();
         initData();
@@ -109,13 +109,21 @@ public class QueryHotelFragment extends Fragment {
                public void onResponse(Location location) {
                    if(location.isSuccess){
                        queryCity(location.cityName);
+                   }else {
+                       initHotel();
                    }
                }
            });
        }
     }
 
-    private void queryCity(String cityName){
+    private void queryCity(final String cityName){
+        Constant.MainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                tv_city_titel.setText(cityName);
+            }
+        }) ;
         CityService.getCityId(cityName, new okhttp3.Callback(){
 
             @Override
@@ -166,7 +174,7 @@ public class QueryHotelFragment extends Fragment {
 
     private void initData() {
         initList();
-        initHotel();
+//        initHotel();
         initSwipeLayout();
         initDrawerLayout();
 
@@ -258,7 +266,6 @@ public class QueryHotelFragment extends Fragment {
     private void initHotel() {
         // 完成宾馆信息的查询
         Log.d("123", "查询");
-
         String queryURL = hotelURL + (nowPage + pageIndex) + (cityId + cityIdIndex) + (keyWords + keyWordsIndex);
         Log.d("123", "queryURL: " + queryURL);
         new NewHotelAsyncTask().execute(queryURL);
@@ -269,7 +276,6 @@ public class QueryHotelFragment extends Fragment {
      */
     private void updataHotel() {
         pageIndex++;
-
         String queryURL = hotelURL + (nowPage + pageIndex) + (cityId + cityIdIndex) + (keyWords + keyWordsIndex);
         new UpdataHotelAsyncTask().execute(queryURL);
     }
@@ -360,6 +366,11 @@ public class QueryHotelFragment extends Fragment {
      * 异步加载新的旅馆列表数据
      */
     class NewHotelAsyncTask extends AsyncTask<String, Void, List<Hotel>> {
+
+        @Override
+        protected void onPreExecute() {
+
+        }
 
         @Override
         protected List<Hotel> doInBackground(String... strings) {
