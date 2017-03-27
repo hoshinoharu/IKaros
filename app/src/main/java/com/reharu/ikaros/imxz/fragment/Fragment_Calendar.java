@@ -76,7 +76,7 @@ public class Fragment_Calendar extends MainFragment implements OnDateSelectedLis
         mIntent.putExtra("flag", "Calendar");
         mIntent.putExtra("date", simpleDateFormat.format(date.getDate()));
         mIntent.putExtra("week", sdfWeek.format(date.getDate()));
-        mIntent.putExtra("month", date.getMonth()+"");
+        mIntent.putExtra("month", date.getMonth());
         mIntent.putExtra("day", date.getDay() + "");
         ((OnChooseCoP) Fragment_Main.fragms[1]).setChooseContent(mIntent);
         finish();
