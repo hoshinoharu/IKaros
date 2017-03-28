@@ -3,6 +3,7 @@ package com.reharu.ikaros.lingmar.utils;
 import android.util.Log;
 
 import com.reharu.harubase.tools.HLog;
+import com.reharu.ikaros.lingmar.domain.Goods;
 import com.reharu.ikaros.lingmar.domain.Hotel;
 import com.reharu.ikaros.lingmar.domain.HotelInfo;
 import com.reharu.ikaros.lingmar.domain.PosPoint;
@@ -171,6 +172,39 @@ public class JSONTool {
         }
 
         return userComments;
+    }
+
+    public static List<Goods> getGoods(String url) {
+        List<Goods> goodsList = new ArrayList<Goods>();
+
+        try {
+            String json = readStream(new URL(url).openConnection().getInputStream());
+
+            JSONObject jsonObject = new JSONObject(json);
+            JSONArray result = jsonObject.getJSONObject("result").getJSONObject("1164535").getJSONArray("result");
+            for (int i = 0; i < result.length(); i++) {
+                Goods goods = new Goods(i+1);
+                JSONObject jsonObject1 = result.getJSONObject(i);
+                String content = jsonObject1.getString("content");
+                String title = jsonObject1.getString("title");
+                String pic = "http:" + jsonObject1.getString("pic");
+                String zanTotal = jsonObject1.getString("zanTotal") + " 人都说好";
+                String goodsURL = "http:" + jsonObject1.getString("url");
+                String goodsId = jsonObject1.getString("itemId");
+
+                goods.setGoodsTitle(title);
+                goods.setGoodsContent(content);
+                goods.setGoodsPic(pic);
+                goods.setZanTotal(zanTotal);
+                goods.setGoodsURL(goodsURL);
+                goods.setGoodsId(goodsId);
+
+                goodsList.add(goods);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return goodsList;
     }
 
     /**

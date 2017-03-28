@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +21,7 @@ import com.reharu.ikaros.R;
 import com.reharu.ikaros.imxz.Utils.TrainInfo;
 import com.reharu.ikaros.imxz.adapter.TrainAdapter;
 import com.reharu.ikaros.imxz.entity.StationInfo;
+import com.yalantis.taurus.PullToRefreshView;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import java.util.List;
 public class Fragment_Main extends MainFragment implements View.OnClickListener {
 
     private static ListView mListView;
-    private static SwipeRefreshLayout mRefresh;
+    private static PullToRefreshView mPullToRefreshView;
     private Button btn_buyPlain;
     private Button btn_buyTrain;
     private Button btn_buyBus;
@@ -51,14 +51,14 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
 
     private View mView;
 
-    private int status ;
-    private static final int STATUS_PLANE = 0 ;
-    private static final int STATUS_TRAIN = 1 ;
+    private int status;
+    private static final int STATUS_PLANE = 0;
+    private static final int STATUS_TRAIN = 1;
     private static final int STATUS_BUS = 2;
 
     private void initView() {
         mListView = (ListView) mView.findViewById(R.id.lv_train_infos);
-        mRefresh = (SwipeRefreshLayout) mView.findViewById(R.id.srl_refresh);
+        mPullToRefreshView = (PullToRefreshView) mView.findViewById(R.id.pull_to_refresh);
         btn_buyPlain = (Button) mView.findViewById(R.id.btn_buyPlain);
         btn_buyTrain = (Button) mView.findViewById(R.id.btn_buyTrain);
         btn_buyBus = (Button) mView.findViewById(R.id.btn_buyBus);
@@ -83,10 +83,10 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
     }
 
     private void initBundle() {
-        Bundle bundle = this.getArguments() ;
-        if(bundle != null){
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
             String url = bundle.getString(QUERY_URL, null);
-            if(url != null){
+            if (url != null) {
                 refreshStationInfo(url);
             }
         }
@@ -97,7 +97,7 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
 
         mFmanager = getActivity().getFragmentManager();
         mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[1]).commit();
-        status = STATUS_TRAIN ;
+        status = STATUS_TRAIN;
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -107,14 +107,20 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
         if (startWay != null && endWay != null && chooseDate != null) {
             reFreshStationInfo(chooseDate, startWay, endWay);
         }
-        mRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (startWay != null && endWay != null && chooseDate != null) {
-                    reFreshStationInfo(chooseDate, startWay, endWay);
-                } else {
-                    mRefresh.setRefreshing(false);
-                }
+                mPullToRefreshView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (startWay != null && endWay != null && chooseDate != null) {
+                            reFreshStationInfo(chooseDate, startWay, endWay);
+                        } else {
+                            mPullToRefreshView.setRefreshing(false);
+                        }
+                    }
+                }, 2000);
             }
         });
         btn_buyPlain.setOnClickListener(this);
@@ -128,23 +134,23 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_buyPlain: {
-                if(status != STATUS_PLANE){
+                if (status != STATUS_PLANE) {
                     mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[0]).commit();
-                    status = STATUS_PLANE ;
+                    status = STATUS_PLANE;
                 }
             }
             break;
             case R.id.btn_buyTrain: {
-                if(status != STATUS_TRAIN) {
+                if (status != STATUS_TRAIN) {
                     mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[1]).commit();
-                    status = STATUS_TRAIN ;
+                    status = STATUS_TRAIN;
                 }
             }
             break;
             case R.id.btn_buyBus: {
-                if(status != STATUS_BUS) {
+                if (status != STATUS_BUS) {
                     mFmanager.beginTransaction().replace(R.id.fr_fl_content, fragms[2]).commit();
-                    status = STATUS_BUS ;
+                    status = STATUS_BUS;
                 }
             }
             break;
@@ -153,11 +159,11 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
 
 
     public static void reFreshStationInfo(final String data, final String fromPlace, final String toPlace) {
-            new AsyncTask<Void, Void, List<StationInfo>>() {
+        new AsyncTask<Void, Void, List<StationInfo>>() {
 
             @Override
             protected void onPreExecute() {
-                mRefresh.setRefreshing(true);
+                mPullToRefreshView.setRefreshing(true);
             }
 
             @Override
@@ -175,20 +181,21 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
             }
         }.execute();
     }
+
     //修改
     /*根据图灵返回的url查询*/
-    public void refreshStationInfo(final String url){
+    public void refreshStationInfo(final String url) {
         new AsyncTask<Void, Void, List<StationInfo>>() {
 
             @Override
             protected void onPreExecute() {
-                mRefresh.setRefreshing(true);
+                mPullToRefreshView.setRefreshing(true);
             }
 
             @Override
             protected List<StationInfo> doInBackground(Void... params) {
                 //替换图灵url
-                String realUrl = url.replaceFirst(".*\\?", "http://touch.train.qunar.com/api/train/trains2s?") ;
+                String realUrl = url.replaceFirst(".*\\?", "http://touch.train.qunar.com/api/train/trains2s?");
                 realUrl = realUrl.replaceFirst("&sort=.*", "&bd_source=qunar&filterNewDepTimeRange=00%3A00-24%3A00&filterNewArrTimeRange=00%3A00-24%3A00");
                 HLog.e("TAG", realUrl);
                 List<StationInfo> stationsInfos = TrainInfo.getStationsInfo(realUrl);
@@ -203,7 +210,7 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
     }
 
 
-    public static void showStationInfo(List<StationInfo> stationInfos){
+    public static void showStationInfo(List<StationInfo> stationInfos) {
         if (stationInfos == null || stationInfos.size() == 0) {
             Toast.makeText(HaruApp.context(), "未检索到车票.", Toast.LENGTH_SHORT).show();
             mAdapter = new TrainAdapter(stationInfos);
@@ -213,7 +220,7 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
             mListView.setAdapter(mAdapter);
         }
 
-        mRefresh.setRefreshing(false);
+        mPullToRefreshView.setRefreshing(false);
     }
     //
 

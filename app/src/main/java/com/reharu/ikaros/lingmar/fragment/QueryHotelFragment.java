@@ -4,10 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -35,6 +33,7 @@ import com.reharu.ikaros.lingmar.domain.Hotel;
 import com.reharu.ikaros.lingmar.domain.PosPoint;
 import com.reharu.ikaros.lingmar.service.CityService;
 import com.reharu.ikaros.lingmar.utils.JSONTool;
+import com.yalantis.phoenix.PullToRefreshView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,12 +44,12 @@ import okhttp3.Response;
 
 public class QueryHotelFragment extends Fragment {
 
-    public static final String CITY_NAME = "cityName" ;
+    public static final String CITY_NAME = "cityName";
 
 
     private TextView tv_city_titel;
     private ListView mListviewCity;
-    private SwipeRefreshLayout swipeLayout;
+    private PullToRefreshView mPullToRefreshView;
     private DrawerLayout drawerlayout;
 
     // 侧滑栏中的控件
@@ -76,7 +75,7 @@ public class QueryHotelFragment extends Fragment {
     private String cityIdIndex = "0101";
     private String keyWordsIndex = "";
 
-    private HCortanaActivity cortanaActivity ;
+    private HCortanaActivity cortanaActivity;
 
     @Nullable
     @Override
@@ -99,32 +98,32 @@ public class QueryHotelFragment extends Fragment {
     }
 
     private void initBundle() {
-        Bundle bundle = getArguments() ;
-       if(bundle != null){
-           String cityName = bundle.getString(CITY_NAME);
-           queryCity(cityName);
-       }else {
-           LocationGetter.getLoc(new LocationGetter.ResponseListener() {
-               @Override
-               public void onResponse(Location location) {
-                   if(location.isSuccess){
-                       queryCity(location.cityName);
-                   }else {
-                       initHotel();
-                   }
-               }
-           });
-       }
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String cityName = bundle.getString(CITY_NAME);
+            queryCity(cityName);
+        } else {
+            LocationGetter.getLoc(new LocationGetter.ResponseListener() {
+                @Override
+                public void onResponse(Location location) {
+                    if (location.isSuccess) {
+                        queryCity(location.cityName);
+                    } else {
+                        initHotel();
+                    }
+                }
+            });
+        }
     }
 
-    private void queryCity(final String cityName){
+    private void queryCity(final String cityName) {
         Constant.MainHandler.post(new Runnable() {
             @Override
             public void run() {
                 tv_city_titel.setText(cityName);
             }
-        }) ;
-        CityService.getCityId(cityName, new okhttp3.Callback(){
+        });
+        CityService.getCityId(cityName, new okhttp3.Callback() {
 
             @Override
             public void onFailure(Call call, IOException e) {
@@ -134,14 +133,14 @@ public class QueryHotelFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String resp = response.body().string();
-                String queryURL = hotelURL + cityId + resp ;
+                String queryURL = hotelURL + cityId + resp;
                 HLog.e("TAG", queryURL);
                 Constant.MainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        swipeLayout.setRefreshing(true);
+                        mPullToRefreshView.setRefreshing(true);
                     }
-                }) ;
+                });
                 new NewHotelAsyncTask().execute(queryURL);
             }
         });
@@ -150,7 +149,7 @@ public class QueryHotelFragment extends Fragment {
     private void initUI() {
         tv_city_titel = (TextView) mView.findViewById(R.id.tv_city_titel);
         mListviewCity = (ListView) mView.findViewById(R.id.listview_city);
-        swipeLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_layout);
+        mPullToRefreshView = (PullToRefreshView) mView.findViewById(R.id.pull_to_refresh);
         drawerlayout = (DrawerLayout) mView.findViewById(R.id.drawerlayout);
         queryAutoText = (TextView) mView.findViewById(R.id.city_query_auto);
         et_queryCity = (EditText) mView.findViewById(R.id.et_queryCity);
@@ -240,21 +239,18 @@ public class QueryHotelFragment extends Fragment {
      * 初始化下拉刷新
      */
     private void initSwipeLayout() {
-        swipeLayout.setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_blue_bright, android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
 
-        swipeLayout.setRefreshing(true);
-        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mPullToRefreshView.setRefreshing(true);
+        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
+                mPullToRefreshView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        // 刷新信息
-
-                        swipeLayout.setRefreshing(false);
+                        String queryURL = hotelURL + nowPage + pageIndex + cityId + cityIdIndex + keyWords + keyWordsIndex;
+                        new NewHotelAsyncTask().execute(queryURL);
                     }
-                }, 3000);
+                }, 2000);
             }
         });
     }
@@ -310,7 +306,7 @@ public class QueryHotelFragment extends Fragment {
                 } else {
                     tv_city_titel.setText(keyWord);
                 }
-                swipeLayout.setRefreshing(true);
+                mPullToRefreshView.setRefreshing(true);
                 new NewHotelAsyncTask().execute(queryURL);
             }
         });
@@ -379,7 +375,7 @@ public class QueryHotelFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<Hotel> hotels) {
-            swipeLayout.setRefreshing(false);
+            mPullToRefreshView.setRefreshing(false);
             // 使用同一对象
             hotelList.clear();
             hotelList.addAll(hotels);
@@ -412,8 +408,8 @@ public class QueryHotelFragment extends Fragment {
             posPointList.clear();
             posPointList.addAll(posPoints);
 //            HLog.d("123", "posPointList: " + posPointList.toString());
-            Activity activity = getActivity() ;
-            if(activity != null){
+            Activity activity = getActivity();
+            if (activity != null) {
                 if (posPointAdapter == null) {
                     PosPointAdapter posPointAdapter = new PosPointAdapter(activity.getApplicationContext(), posPoints);
                     listview_AutoComplete.setAdapter(posPointAdapter);

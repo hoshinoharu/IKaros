@@ -67,6 +67,7 @@ import com.reharu.ikaros.haru.weather.service.WeatherService;
 import com.reharu.ikaros.haru.weather.vo.Weather;
 import com.reharu.ikaros.imxz.fragment.Fragment_Main;
 import com.reharu.ikaros.lingmar.fragment.QueryHotelFragment;
+import com.reharu.ikaros.lingmar.fragment.ShopFragment;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -231,7 +232,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
                     new OpIcon(R.drawable.ic_shopping, "购物剁手", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            onError();
+                            startFragment(ShopFragment.class);
                         }
                     })
                 );

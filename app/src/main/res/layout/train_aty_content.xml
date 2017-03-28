@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
@@ -98,19 +99,20 @@
 
     </LinearLayout>
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/srl_refresh"
+    <com.yalantis.taurus.PullToRefreshView
+        android:id="@+id/pull_to_refresh"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
+        android:layout_height="match_parent"
+        app:type="sun">
         <ListView
             android:id="@+id/lv_train_infos"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"></ListView>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_weight="1"
+            android:background="#fff"
+            >
+        </ListView>
+    </com.yalantis.taurus.PullToRefreshView>
 
 
 </LinearLayout>

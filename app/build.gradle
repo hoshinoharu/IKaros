@@ -10,6 +10,10 @@ android {
         versionCode 2
         versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+        }
     }
     buildTypes {
         release {
@@ -46,9 +50,11 @@ dependencies {
     compile 'com.github.rahatarmanahmed:circularprogressview:2.5.0'
     compile 'com.github.satyan:sugar:1.5'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha9'
+    compile 'com.squareup.picasso:picasso:2.3.2'
+    compile 'com.github.yalantis:taurus:1.0.2'
+    compile 'com.yalantis:phoenix:1.2.3'
+
     testCompile 'junit:junit:4.12'
-
-
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'com.gjiazhe:wavesidebar:1.2'
 }
