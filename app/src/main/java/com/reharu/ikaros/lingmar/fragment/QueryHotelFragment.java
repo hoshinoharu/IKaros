@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.reharu.harubase.base.HaruApp;
 import com.reharu.harubase.tools.Constant;
 import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
@@ -35,12 +36,8 @@ import com.reharu.ikaros.lingmar.service.CityService;
 import com.reharu.ikaros.lingmar.utils.JSONTool;
 import com.yalantis.phoenix.PullToRefreshView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
-import okhttp3.Response;
 
 public class QueryHotelFragment extends Fragment {
 
@@ -123,27 +120,37 @@ public class QueryHotelFragment extends Fragment {
                 tv_city_titel.setText(cityName);
             }
         });
-        CityService.getCityId(cityName, new okhttp3.Callback() {
-
+        String resp = CityService.getCityId(cityName, null) ;
+        String queryURL = hotelURL + cityId + resp;
+        HLog.e("TAG", queryURL);
+        Constant.MainHandler.post(new Runnable() {
             @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String resp = response.body().string();
-                String queryURL = hotelURL + cityId + resp;
-                HLog.e("TAG", queryURL);
-                Constant.MainHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mPullToRefreshView.setRefreshing(true);
-                    }
-                });
-                new NewHotelAsyncTask().execute(queryURL);
+            public void run() {
+                mPullToRefreshView.setRefreshing(true);
             }
         });
+        new NewHotelAsyncTask().execute(queryURL);
+//        CityService.getCityId(cityName, new okhttp3.Callback() {
+//
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String resp = response.body().string();
+//                String queryURL = hotelURL + cityId + resp;
+//                HLog.e("TAG", queryURL);
+//                Constant.MainHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mPullToRefreshView.setRefreshing(true);
+//                    }
+//                });
+//                new NewHotelAsyncTask().execute(queryURL);
+//            }
+//        });
     }
 
     private void initUI() {
@@ -315,7 +322,6 @@ public class QueryHotelFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
                 Bundle bundle = new Bundle();
                 Hotel hotel = hotelList.get(i);
                 bundle.putString("hotelName", hotel.getHotelName());
@@ -383,7 +389,7 @@ public class QueryHotelFragment extends Fragment {
             HLog.d("123", "NewHotelAsyncTask hotelList: " + hotelList);
             // 展示宾馆item
             if (hotelAdapter == null) {
-                hotelAdapter = new HotelItemAdapter(getActivity().getApplicationContext(), hotelList);
+                hotelAdapter = new HotelItemAdapter(HaruApp.context(), hotelList);
                 mListviewCity.setAdapter(hotelAdapter);
             } else {
                 hotelAdapter.notifyDataSetChanged();

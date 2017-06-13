@@ -12,7 +12,16 @@ import android.view.ViewGroup;
  */
 
 public abstract class HaruFragment extends Fragment implements AutoInjecter.AutoInjectable{
+
+    protected HaruActivity owner ;
     protected View contentView ;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        owner = (HaruActivity) getActivity();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,4 +41,5 @@ public abstract class HaruFragment extends Fragment implements AutoInjecter.Auto
     public void afterInject(@Nullable Bundle savedInstanceState){
 
     }
+
 }

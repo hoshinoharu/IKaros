@@ -20,6 +20,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
 
     sourceSets {
@@ -53,8 +56,11 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.github.yalantis:taurus:1.0.2'
     compile 'com.yalantis:phoenix:1.2.3'
-
-    testCompile 'junit:junit:4.12'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'com.gjiazhe:wavesidebar:1.2'
+
+    compile 'cn.bingoogolapple:bga-refreshlayout:1.1.7@aar'
+    compile 'cn.bingoogolapple:bga-adapter:1.1.5@aar'
+    testCompile 'junit:junit:4.12'
+    compile files('libs/AMap_Location_V3.3.0_20170118.jar')
 }

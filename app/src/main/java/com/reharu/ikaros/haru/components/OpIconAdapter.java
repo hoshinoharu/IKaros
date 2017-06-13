@@ -2,11 +2,11 @@ package com.reharu.ikaros.haru.components;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +22,26 @@ import java.util.List;
  * Created by hoshino on 2017/3/22.
  */
 
-public class OpIconAdapter extends BaseAdapter {
+public class OpIconAdapter extends RecyclerView.Adapter<OpIconAdapter.ViewHolder> {
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        return new ViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_icon, viewGroup, false));
+    }
+
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, int i) {
+        final OpIcon opIcon = opIconList.get(i);
+        viewHolder.icon.setImageResource(opIcon.imgId);
+        viewHolder.desc.setText(opIcon.desc);
+        viewHolder.getContentView().setOnClickListener(opIcon.clickListener);
+        viewHolder.bg.setImageResource(opIcon.getBgRes());
+    }
+
+    @Override
+    public int getItemCount() {
+        return opIconList.size();
+    }
 
     public interface OnErrorListener {
         void onError();
@@ -34,13 +53,25 @@ public class OpIconAdapter extends BaseAdapter {
         ImageView icon;
         @AutoInjecter.ViewInject(R.id.desc)
         TextView desc;
-
+        @AutoInjecter.ViewInject(R.id.bg) ImageView bg ;
         ViewHolder(View itemView) {
             super(itemView);
-        }
-
-        public View getContent() {
-            return this.itemView;
+            final ObjectAnimator animator = ObjectAnimator.ofFloat(getContentView(), "scaleX", 1f, 1.2f, 1f).setDuration(350);
+            animator.addUpdateListener(new ObjectAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                    float val = (float) animation.getAnimatedValue();
+                    View view = (View) animator.getTarget();
+                    view.setScaleY(val);
+                }
+            });
+            getContentView().setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    animator.start();
+                    return false;
+                }
+            });
         }
     }
 
@@ -61,51 +92,7 @@ public class OpIconAdapter extends BaseAdapter {
         this.listener = listener;
     }
 
-    @Override
-    public int getCount() {
-        return opIconList.size();
-    }
 
-    @Override
-    public Object getItem(int position) {
-        return opIconList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final OpIcon opIcon = opIconList.get(position);
-        if (convertView == null) {
-            convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_icon, parent, false);
-            ViewHolder viewHolder = new ViewHolder(convertView);
-            final ObjectAnimator animator = ObjectAnimator.ofFloat(viewHolder.getContent(), "scaleX", 1f, 1.2f, 1f).setDuration(350);
-            animator.addUpdateListener(new ObjectAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    float val = (float) animation.getAnimatedValue();
-                    View view = (View) animator.getTarget();
-                    view.setScaleY(val);
-                }
-            });
-            convertView.setTag(viewHolder);
-            viewHolder.getContent().setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    animator.start();
-                    return false;
-                }
-            });
-        }
-        ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-        viewHolder.getContent().setOnClickListener(opIcon.clickListener);
-        viewHolder.icon.setImageResource(opIcon.imgId);
-        viewHolder.desc.setText(opIcon.desc);
-        return convertView;
-    }
 
     private void onError() {
         if (this.listener != null) {

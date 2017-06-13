@@ -105,7 +105,7 @@ public class ChartRecordaAdapter extends BaseAdapter {
     public void addRecord(ChartRecord chartRecord){
         this.chartRecordList.add(chartRecord) ;
         notifyDataSetChanged();
-        listView.smoothScrollToPosition(getCount());
+        listView.smoothScrollToPosition(getCount()+1);
     }
 
     @Override

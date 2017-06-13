@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -100,6 +101,7 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
         // 初始化List数据
         if (userCommentList == null) {
             userCommentList = new ArrayList<UserComment>();
+            initLVListener();
         }
 
         // 初始化旅馆列表
@@ -110,6 +112,23 @@ public class HotelFragment extends Fragment implements View.OnClickListener {
         new NewUserCommentAsyncTask().execute(queryCommentURL);
 
         linelayout_show_morecomment.setOnClickListener(this);
+    }
+
+    /**
+     * 初始化宾馆ListView的更新
+     */
+    private void initLVListener() {
+        listview_room_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Room room = hotelInfo.getRooms().get(i);
+                // 跳转到相应的bookURL页面
+                Bundle bundle = new Bundle();
+                bundle.putString("bookURL", room.getBookUrl());
+                cortanaActivity.startFragment(WebFragment.class, bundle);
+
+            }
+        });
     }
 
     /**

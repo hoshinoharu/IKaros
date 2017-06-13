@@ -9,6 +9,7 @@ import com.orange.input.touch.TouchEvent;
 import com.orange.util.HorizontalAlign;
 import com.reharu.harubase.tools.HLog;
 import com.reharu.harubase.tools.ScreenTool;
+import com.reharu.harubase.tools.ViewTool;
 import com.reharu.ikaros.haru.activities.HCortanaActivity;
 import com.reharu.ikaros.haru.cortana.behavior.Feeling;
 import com.reharu.ikaros.haru.cortana.dto.SpeackContent;
@@ -25,6 +26,8 @@ public class Cortana extends Layer {
 
     //每一帧动画持续时间
     private long eachDuration = 30;
+
+    private float scale = 0.3f ;
 
     private AnimatedSprite curAnima;
 
@@ -47,13 +50,22 @@ public class Cortana extends Layer {
 
     private CortanaAnimResManager animResManager ;
 
+    private float maxHeight = 0;
+
+    private float offsetY = 300 ;
+
+
+
+    private AnimatedSprite maxHeiAnimaSp;
+
     public Cortana(Scene pScene) {
         super(pScene);
         this.animResManager = new CortanaAnimResManager(this) ;
         this.setIgnoreTouch(false);
         this.setHeight(ScreenTool.getScreenSize().heightPixels/2);
-
-        init(animResManager.getAllAnimations());
+        List<Animation> allAnimations = animResManager.getAllAnimations();
+        init(allAnimations);
+        offsetAnimation(allAnimations);
     }
 
     public void init(List<Animation> animationList) {
@@ -75,13 +87,20 @@ public class Cortana extends Layer {
     private void initAnimation(Animation animation) {
         //添加动画
         AnimatedSprite animatedSprite = animation.getAnimatedSprite() ;
+        animatedSprite.setScale(scale, scale);
         if(animatedSprite == null){
             return;
         }
         animatedSprite.setX((ScreenTool.getScreenSize().widthPixels - animatedSprite.getWidth()) / 2 + animation.getOffsetX());
-        animatedSprite.setY((ScreenTool.getScreenSize().heightPixels /2- animatedSprite.getHeight()) + animation.getOffsetY());
+        animatedSprite.setY((ScreenTool.getScreenSize().heightPixels / 2 - animatedSprite.getHeight())  + animation.getOffsetY() );
         float y = animatedSprite.getBottomY() ;
         lowestLocY =  y > lowestLocY ? y : lowestLocY;
+        float height = animatedSprite.getHeight() ;
+        if(maxHeight < height){
+            maxHeight = height ;
+            maxHeiAnimaSp = animatedSprite ;
+            offsetY = - maxHeiAnimaSp.getY()- ViewTool.dip2px(64);
+        }
         animatedSprite.setVisible(false);
         this.attachChild(animatedSprite, 0);
     }
@@ -244,5 +263,17 @@ public class Cortana extends Layer {
 
     public CortanaAnimResManager getAnimResManager() {
         return animResManager;
+    }
+
+    public float getMaxHeight() {
+        return maxHeight;
+    }
+
+    public void offsetAnimation(List<Animation> animationList){
+        HLog.e("TAG", offsetY);
+        for(Animation animation : animationList){
+            AnimatedSprite animatedSprite = animation.getAnimatedSprite() ;
+            animatedSprite.setY((ScreenTool.getScreenSize().heightPixels / 2 - animatedSprite.getHeight())  + animation.getOffsetY() + offsetY);
+        }
     }
 }

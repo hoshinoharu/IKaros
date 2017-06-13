@@ -101,7 +101,19 @@ public class Fragment_Main extends MainFragment implements View.OnClickListener 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                HLog.e("TAG", position + "");
+                String url = "http://touch.train.qunar.com/trainList_Card.html?searchType=&bd_source=&sort=&needRecommondLess=1&date=NOWDATE&trainNum=NUMBER&startStation=STARTPLACE&startCity=STARTPLACE&searchDep=STARTPLACE&searchArr=ENDPLACE&endStation=ENDPLACE&endCity=ENDPLACE&seatType=%E7%A1%AC%E5%BA%A7";
+                StationInfo station = (StationInfo) mAdapter.getItem(position);
+                String endplace = station.getdStation();
+                String startplace = station.getaStation();
+                String trainNum = station.getTrainNumber();
+                String date = chooseDate;
+                url = url.replace("STARTPLACE", endplace).replace("ENDPLACE", startplace).replace("NOWDATE", date).replace("NUMBER",trainNum);
+                HLog.e("TAG", url);
+
+                Bundle bundle = new Bundle();
+                bundle.putString("TrainURL", url);
+                cortanaActivity.startFragment(Fragment_TrainPay.class, bundle);
+
             }
         });
         if (startWay != null && endWay != null && chooseDate != null) {

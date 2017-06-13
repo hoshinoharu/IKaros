@@ -8,6 +8,7 @@ import android.view.View;
  */
 
 public class HaruViewHolder extends RecyclerView.ViewHolder implements AutoInjecter.AutoInjectable{
+
     public HaruViewHolder(View itemView) {
         super(itemView);
         AutoInjecter.autoInjectAllField(this);
@@ -16,5 +17,9 @@ public class HaruViewHolder extends RecyclerView.ViewHolder implements AutoInjec
     @Override
     public View findInjectViewById(int resId) {
         return this.itemView.findViewById(resId);
+    }
+
+    public View getContentView(){
+        return this.itemView ;
     }
 }

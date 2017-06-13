@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
 import com.reharu.ikaros.haru.activities.HCortanaActivity;
 import com.reharu.ikaros.lingmar.adapter.ShopAdapter;
@@ -77,7 +78,7 @@ public class ShopFragment extends Fragment {
 
             @Override
             public void onItemClick(View view, Goods data) {
-                Log.d("123", "data: " + data.toString());
+//                Log.d("123", "data: " + data.toString());
                 // 跳转到商品的详细界面
 //                Intent intent = new Intent(getActivity().getApplicationContext(), ShopInfoFragment.class);
 //                intent.putExtra("goodsId", data.getGoodsId());
@@ -85,6 +86,7 @@ public class ShopFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("goodsId", data.getGoodsId());
                 cortanaActivity.startFragment(ShopInfoFragment.class, bundle);
+                HLog.d("123", "点击图片");
             }
         });
     }

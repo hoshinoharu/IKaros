@@ -7,52 +7,89 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".haru.activities.HCortanaActivity"
+    android:background="#0000"
     >
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/operateLayout"
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#0fff"
+        >
+    </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:id="@+id/opLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:background="#fff"
+        app:gapRadius="60"
         >
-        <RelativeLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            app:cardCornerRadius="8dp"
             >
-            <GridView
-                android:id="@+id/topGrid"
+            <com.github.why168.LoopViewPagerLayout
+                android:id="@+id/bannerLayout"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_gravity="bottom"
+                >
+            </com.github.why168.LoopViewPagerLayout>
+            <TextView
+                android:id="@+id/bannerTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:numColumns="4"
-                android:gravity="center_horizontal"
+                android:textSize="14sp"
+                android:padding="4dp"
+                android:gravity="center"
+                android:layout_gravity="bottom|end"
+                android:background="#aa66ccff"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:layout_marginBottom="24dp"
                 />
-            <GridView
-                android:id="@+id/leftGrid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/topGrid"
-                android:numColumns="1"
-                android:gravity="left"
-                />
-            <GridView
-                android:id="@+id/rightGrid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/topGrid"
-                android:numColumns="1"
-                android:gravity="right"
-                />
-        </RelativeLayout>
-    </android.support.design.widget.CoordinatorLayout>
-
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/icContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchMode="spacingWidthUniform"
+            app:spanCount="4"
+            android:overScrollMode="never"
+            >
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+    <com.reharu.ikaros.haru.components.TopGapRefreshLayout
+        android:id="@+id/bgarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:layout_marginTop="?attr/actionBarSize"
+        app:gapRadius="60"
+        >
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/newsList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        ></android.support.v7.widget.RecyclerView>
+    </com.reharu.ikaros.haru.components.TopGapRefreshLayout>
+    <FrameLayout
+        android:id="@+id/fragmentContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></FrameLayout>
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/chartLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:background="#afff">
+        android:layout_height="450dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="#2fff"
+        android:paddingTop="50dp"
+        android:visibility="gone"
+        >
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -160,8 +197,15 @@
             </LinearLayout>
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
-    <FrameLayout
-        android:id="@+id/fragmentContent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" ></FrameLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/chartBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom|right"
+        app:backgroundTint="#66ccff"
+        app:rippleColor="#ff87ffeb"
+        android:src="@drawable/ic_voice_white"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        />
 </com.reharu.ikaros.haru.components.HaruCoordinatorLayout>

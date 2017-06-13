@@ -47,7 +47,7 @@ public class SpeakVolumeDialog implements AutoInjecter.AutoInjectable{
         mainView = LayoutInflater.from(activity).inflate(R.layout.dialog_speak_volume, ActivityTool.getRootView(activity), false);
         AutoInjecter.autoInjectAllField(this);
         dialog = new AlertDialog.Builder(activity).create();
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         loadAnimation();
     }
 

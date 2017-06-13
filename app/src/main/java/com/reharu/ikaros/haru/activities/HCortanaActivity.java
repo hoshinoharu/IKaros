@@ -3,24 +3,34 @@ package com.reharu.ikaros.haru.activities;
 import android.animation.Animator;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.graphics.Color;
+import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
-import android.view.KeyEvent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.GridLayoutAnimationController;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
-import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.github.why168.LoopViewPagerLayout;
+import com.github.why168.listener.OnLoadImageViewListener;
+import com.github.why168.modle.BannerInfo;
+import com.github.why168.modle.IndicatorLocation;
+import com.github.why168.modle.LoopStyle;
 import com.orange.engine.camera.ZoomCamera;
 import com.orange.engine.device.Device;
 import com.orange.engine.options.PixelPerfectEngineOptions;
@@ -30,9 +40,9 @@ import com.orange.input.touch.TouchEvent;
 import com.orange.opengl.font.BitmapFont;
 import com.orange.res.RegionRes;
 import com.orange.res.SoundRes;
-import com.orange.ui.activity.GameActivity;
 import com.orange.ui.launcher.GameLauncher;
 import com.reharu.harubase.base.AutoInjecter;
+import com.reharu.harubase.base.HaruApp;
 import com.reharu.harubase.tools.ActivityTool;
 import com.reharu.harubase.tools.AnimeTool;
 import com.reharu.harubase.tools.Constant;
@@ -40,15 +50,18 @@ import com.reharu.harubase.tools.HLog;
 import com.reharu.harubase.tools.OKHttpTool;
 import com.reharu.harubase.tools.ScreenTool;
 import com.reharu.harubase.tools.StreamTool;
+import com.reharu.harubase.tools.ViewTool;
 import com.reharu.ikaros.R;
+import com.reharu.ikaros.haru.components.BGARNewsAdapter;
+import com.reharu.ikaros.haru.components.GridSpacingItemDecoration;
 import com.reharu.ikaros.haru.components.HaruCoordinatorLayout;
 import com.reharu.ikaros.haru.components.OpIconAdapter;
-import com.reharu.ikaros.haru.cortana.CortanaFeelingController;
-import com.reharu.ikaros.haru.cortana.OrderDispatcher;
 import com.reharu.ikaros.haru.components.SpeackVolumeChangeListener;
 import com.reharu.ikaros.haru.components.SpeakVolumeDialog;
 import com.reharu.ikaros.haru.cortana.Cortana;
 import com.reharu.ikaros.haru.cortana.CortanaAnimResManager;
+import com.reharu.ikaros.haru.cortana.CortanaFeelingController;
+import com.reharu.ikaros.haru.cortana.OrderDispatcher;
 import com.reharu.ikaros.haru.cortana.SoundMannager;
 import com.reharu.ikaros.haru.cortana.TulingRespHandler;
 import com.reharu.ikaros.haru.cortana.adapter.ChartRecordaAdapter;
@@ -59,6 +72,10 @@ import com.reharu.ikaros.haru.cortana.dto.SpeackContent;
 import com.reharu.ikaros.haru.cortana.listener.CortanaListener;
 import com.reharu.ikaros.haru.cortana.scene.CortanaScene;
 import com.reharu.ikaros.haru.cortana.sprite.WaveSprite;
+import com.reharu.ikaros.haru.fragment.Splash;
+import com.reharu.ikaros.haru.news.News;
+import com.reharu.ikaros.haru.news.NewsResult;
+import com.reharu.ikaros.haru.news.service.NewsService;
 import com.reharu.ikaros.haru.sound.SpeechTool;
 import com.reharu.ikaros.haru.tools.GsonTool;
 import com.reharu.ikaros.haru.tools.Location;
@@ -74,10 +91,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGAStickinessRefreshViewHolder;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoInjectable, OpIconAdapter.OnErrorListener {
+public class HCortanaActivity extends HaruGameActivity implements AutoInjecter.AutoInjectable, OpIconAdapter.OnErrorListener {
     /*数据相关*/
     private AnimationDrawable cortanaAppera_0;
     private AnimationDrawable cortanaNormalBlink;
@@ -91,6 +110,10 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     private int initTimes = 0 ;
     private int allInitTimes = 2 ;
 
+    private ArrayList<BannerInfo> bannerInfoList ;
+    private List<News> newsList = new ArrayList<>();
+    private BGARNewsAdapter newsAdaoter;
+
     //出场动画
     private Animator apperaAnim ;
 
@@ -102,17 +125,20 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
     private HaruCoordinatorLayout cortanaInterface;
 
     @AutoInjecter.ViewInject(R.id.chartLayout) private CoordinatorLayout chartLayout;
-    @AutoInjecter.ViewInject(R.id.operateLayout) private CoordinatorLayout operateLayout;
     @AutoInjecter.ViewInject(R.id.chartRecordList) private ListView chartRecordList ;
     @AutoInjecter.ViewInject(R.id.inputText) private EditText inputText ;
     @AutoInjecter.ViewInject(R.id.sendBtn) private View sendBtn ;
     @AutoInjecter.ViewInject(R.id.voiceBtn) private View voiceBtn ;
     @AutoInjecter.ViewInject(R.id.recordListContainer) private ViewGroup recordListContainer ;
-
+    @AutoInjecter.ViewInject(R.id.bannerLayout) private LoopViewPagerLayout bannerLayout ;
+    @AutoInjecter.ViewInject(R.id.bannerTitle) private TextView bannerTitle;
+    @AutoInjecter.ViewInject(R.id.newsList) private RecyclerView newsListView;
+    @AutoInjecter.ViewInject(R.id.opLayout) private ViewGroup opLayout ;
+    @AutoInjecter.ViewInject(R.id.bgarLayout) private BGARefreshLayout bgarLayout ;
+    @AutoInjecter.ViewInject(R.id.fragmentContent) private View fragmentContent ;
+    @AutoInjecter.ViewInject(R.id.chartBtn) private FloatingActionButton chartBtn ;
     /*显示的图标*/
-    @AutoInjecter.ViewInject(R.id.topGrid) private GridView topGrid ;
-    @AutoInjecter.ViewInject(R.id.leftGrid) private GridView leftGrid ;
-    @AutoInjecter.ViewInject(R.id.rightGrid) private GridView rightGrid ;
+    @AutoInjecter.ViewInject(R.id.icContainer) private RecyclerView icContainer ;
 
 
     private SpeakVolumeDialog speakVolumeDialog ;
@@ -188,75 +214,6 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
 
 
-    private void initAnimator() {
-        layoutAnimation = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        layoutAnimation.setDuration(500);
-        layoutAnimation.setStartOffset(500);
-        layoutAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        AnimeTool.showAnime(chartLayout,true).start();
-    }
-
-    private void initIcon() {
-        int topMaxIcon = 4 ;
-        List<OpIcon> iconList = Arrays.asList(
-                    new OpIcon(R.drawable.ic_alarm, "准点提醒", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onError();
-                        }
-                    }),
-                    new OpIcon(R.drawable.ic_hotel, "酒店住宿", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startFragment(QueryHotelFragment.class);
-                        }
-                    }),
-                    new OpIcon(R.drawable.ic_plane, "机票车票", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startFragment(Fragment_Main.fragms[5]);
-                        }
-                    }),
-                    new OpIcon(R.drawable.ic_loc, "地理位置", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            queryLoc();
-                        }
-                    }),
-                    new OpIcon(R.drawable.ic_weather, "天气预报", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            preQueryWeather();
-                        }
-                    }),
-                    new OpIcon(R.drawable.ic_shopping, "购物剁手", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            startFragment(ShopFragment.class);
-                        }
-                    })
-                );
-        List<OpIcon> topList  =iconList.subList(0, topMaxIcon) ;
-        if(iconList.size() > 4){
-            int surplus = iconList.size() -topMaxIcon ;
-            int leftIcon = surplus/2 + surplus%2==0?0:1 ;
-            int right = surplus - leftIcon ;
-            List<OpIcon> leftList = iconList.subList(topMaxIcon, topMaxIcon+leftIcon) ;
-            List<OpIcon> rightList = iconList.subList(topMaxIcon+leftIcon, iconList.size()) ;
-            if(rightList.size() > 0){
-                OpIconAdapter rightAdapter = new OpIconAdapter(rightList, this, this);
-                rightGrid.setAdapter(rightAdapter);
-            }
-            leftGrid.setAdapter(new OpIconAdapter(leftList, this, this));
-        }
-        topGrid.setAdapter(new OpIconAdapter(topList, this, this));
-        topGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));
-        leftGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));
-        rightGrid.setLayoutAnimation(new GridLayoutAnimationController(layoutAnimation, 0, 0));
-    }
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -265,6 +222,12 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
         SpeechTool.init(this, getString(R.string.appid));
 
         inflateUI();
+
+        showSplash();
+
+        queryBanners();
+
+        initNewsList();
         //初始化出场动画
         initAnimator();
 
@@ -308,6 +271,212 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
         }
     }
 
+    public void initNewsList(){
+        bgarLayout.setDelegate(new BGARefreshLayout.BGARefreshLayoutDelegate() {
+            @Override
+            public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+                refreshLayout.endRefreshing();
+            }
+
+            @Override
+            public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+                HLog.e("TAG", "loadMore");
+                queryNews();
+                return true;
+            }
+        });
+        BGAStickinessRefreshViewHolder stickinessRefreshViewHolder = new BGAStickinessRefreshViewHolder(HaruApp.context(), true);
+        stickinessRefreshViewHolder.setStickinessColor(R.color.colorPrimary);
+        stickinessRefreshViewHolder.setRotateImage(R.drawable.bga_refresh_stickiness);
+        bgarLayout.setRefreshViewHolder(stickinessRefreshViewHolder);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        newsListView.getLayoutParams().height=ScreenTool.getScreenSize().heightPixels ;
+        newsListView.setLayoutManager(layoutManager);
+        newsAdaoter = new BGARNewsAdapter(newsListView,newsList);
+        newsListView.setAdapter(newsAdaoter.getHeaderAndFooterAdapter());
+        ViewTool.removeView(opLayout);
+        newsAdaoter.addHeaderView(opLayout);
+        queryNews();
+    }
+
+    private void queryNews(){
+        int pageSize = 10 ;
+        int page = newsList.size()/pageSize+1;
+        HLog.e("TAG", "load");
+        NewsService.queryNews(News.EDU, page, pageSize, new OKHttpTool.HCallBack<NewsResult>() {
+            @Override
+            public void onResponse(Call call, NewsResult newsResult) {
+                bgarLayout.endLoadingMore();
+                newsAdaoter.addMoreData(newsResult.list);
+            }
+
+            @Override
+            public void onFail(Call call, Exception e) {
+                onError(getString(R.string.server_error));
+            }
+        });
+    }
+
+    private void queryBanners(){
+        NewsService.queryNews(News.TRAVEL, 1, 4, new OKHttpTool.HCallBack<NewsResult>() {
+
+
+            @Override
+            public void onResponse(Call call, NewsResult newsResult) {
+                bannerInfoList = new ArrayList<>() ;
+                for(News news : newsResult.list){
+                    bannerInfoList.add(new BannerInfo<News>(news, news.getTitle())) ;
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showBanner();
+                    }
+                });
+            }
+
+            @Override
+            public void onFail(Call call, Exception e) {
+                HLog.ex("TAG", e);
+               onError(getString(R.string.server_error));
+            }
+        });
+    }
+
+    public  void showBanner(){
+        if(bannerInfoList == null){
+            return;
+        }
+        this.bannerLayout.getLayoutParams().height = ScreenTool.getScreenSize().widthPixels/5*3;
+        this.bannerLayout.setLoop_ms(2000);
+        this.bannerLayout.setLoop_duration(1000);
+        this.bannerLayout.setLoop_style(LoopStyle.Depth);
+        this.bannerLayout.setIndicatorLocation(IndicatorLocation.Center);
+        this.bannerLayout.initializeData(this);
+        this.bannerLayout.setOnLoadImageViewListener(new OnLoadImageViewListener() {
+            @Override
+            public ImageView createImageView(Context context) {
+                ImageView imageView = new ImageView(context) ;
+                imageView.setLayoutParams(new LoopViewPagerLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                return imageView;
+            }
+
+            @Override
+            public void onLoadImageView(ImageView imageView, Object parameter) {
+                News news = (News) parameter;
+                Glide.with(imageView.getContext()).load(news.getImgurl()).into(imageView);
+            }
+        });
+        this.bannerLayout.getLoopViewPager().addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                int index = i%bannerInfoList.size();
+                changeBannerTitle(bannerInfoList.get(index).title);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+        this.bannerLayout.setLoopData(bannerInfoList);
+        this.bannerLayout.startLoop();
+    }
+
+    private void changeBannerTitle(String title) {
+        bannerTitle.setText(title);
+    }
+
+    private boolean showChartLayout = false ;
+    private void initAnimator() {
+        layoutAnimation = new ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        layoutAnimation.setDuration(500);
+        layoutAnimation.setStartOffset(500);
+        layoutAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+//        AnimeTool.showAnime(chartLayout,true).start();
+        chartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toogleShowChart();
+            }
+        });
+    }
+
+    private void toogleShowChart() {
+        if(showChartLayout){
+            AnimeTool.dismissAnime(chartLayout).start();
+            showChartLayout = false ;
+        }else {
+            AnimeTool.showAnime(chartLayout, true).start();
+            showChartLayout = true ;
+        }
+    }
+    private void showChart(){
+        if(chartLayout.getVisibility()==View.VISIBLE){
+            return;
+        }
+        AnimeTool.showAnime(chartLayout, true).start();
+        showChartLayout = true ;
+    }
+
+    private void initIcon() {
+        List<OpIcon> iconList = Arrays.asList(
+                new OpIcon(R.drawable.ic_alarm, "准点提醒", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onError();
+                    }
+                }, R.drawable.bgb2w),
+                new OpIcon(R.drawable.ic_hotel, "酒店住宿", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startFragment(QueryHotelFragment.class);
+                    }
+                }, R.drawable.bgp2r),
+                new OpIcon(R.drawable.ic_plane, "机票车票", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startFragment(Fragment_Main.fragms[5]);
+                    }
+                }, R.drawable.bgg2w),
+                new OpIcon(R.drawable.ic_loc, "地理位置", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        queryLoc();
+                    }
+                }, R.drawable.bgp2w),
+                new OpIcon(R.drawable.ic_weather, "天气预报", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        preQueryWeather();
+                    }
+                }, R.drawable.bgr2w),
+                new OpIcon(R.drawable.ic_shopping, "购物剁手", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startFragment(ShopFragment.class);
+                    }
+                }, R.drawable.bgy2w)
+        );
+        final int colCount = 4 ;
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
+        icContainer.setLayoutManager(gridLayoutManager);
+        int spanCount = 4;//跟布局里面的spanCount属性是一致的
+        int spacing = 2;//每一个矩形的间距
+        boolean includeEdge = true;//如果设置成false那边缘地带就没有间距s
+        //设置每个item间距
+        icContainer.addItemDecoration(new GridSpacingItemDecoration(spanCount,spacing,includeEdge));
+        icContainer.setAdapter(new OpIconAdapter(iconList, this, this));
+    }
+
     private void initLayoutAnimation() {
         ((ViewGroup)sendBtn.getParent()).setLayoutAnimation(new LayoutAnimationController(layoutAnimation));
         recordListContainer.setLayoutAnimation(new LayoutAnimationController(layoutAnimation));
@@ -318,25 +487,15 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
         //加载UI交互界面
         cortanaInterface = (HaruCoordinatorLayout) LayoutInflater.from(HCortanaActivity.this).inflate(getCorinterfaceLayoutId(), rootView, false);
         rootView.addView(cortanaInterface);
-        cortanaInterface.setBackgroundColor(Color.BLACK);
-
         AutoInjecter.autoInjectAllField(HCortanaActivity.this);
 
 
-        operateLayout.getLayoutParams().height = ScreenTool.getScreenSize().heightPixels/2 ;
-        chartLayout.getLayoutParams().height = ScreenTool.getScreenSize().heightPixels / 2;
-
-
         int halfWidth = ScreenTool.getScreenSize().widthPixels/2 ;
-        leftGrid.getLayoutParams().width = halfWidth ;
-        rightGrid.getLayoutParams().width = halfWidth ;
-
 
         speakVolumeDialog = new SpeakVolumeDialog(this);
     }
     private void onCreateOperateInterface() {
         ActivityTool.getRootView(HCortanaActivity.this).bringChildToFront(cortanaInterface);
-        cortanaInterface.setBackgroundColor(Color.parseColor("#00000000"));
     }
 
     private void queryLoc(){
@@ -415,6 +574,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
     protected void onCreatedCortanaInterface() {
         cortana = cortanaScene.getCortana();
+        dismissSplash();
         initController();
         initView();
         //初始化监听
@@ -442,6 +602,7 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
                 Constant.MainHandler.post(new Runnable() {
                     @Override
                     public void run() {
+                        showChart();
                         recordAdapter.addRecord(new ChartRecord(content, ChartRecord.CORTANA));
                     }
                 }) ;
@@ -532,24 +693,24 @@ public class HCortanaActivity extends GameActivity implements AutoInjecter.AutoI
 
     @Override
     public void onError() {
-        if(cortana != null) {
-            cortana.reportError("该功能暂未实现，真是抱歉呢");
+        onError("该功能暂未实现，真是抱歉呢");
+    }
+
+    public void onError(String msg){
+        if(cortana != null){
+            cortana.reportError(msg);
         }
     }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            if(popFragmentBackStack()){
-                HLog.e("TAG","popSth");
-                return true ;
-            }
-        }
-        return super.onKeyDown(keyCode, event);
+    public void showSplash(){
+        startFragment(Splash.class);
+        setCanPopfrag(false);
+        chartBtn.setVisibility(View.GONE);
     }
 
-    public boolean popFragmentBackStack(){
-        return getFragmentManager().popBackStackImmediate() ;
+    public void dismissSplash(){
+        popFragmentBackStack() ;
+        setCanPopfrag(true);
+        chartBtn.setVisibility(View.VISIBLE);
     }
-
 }

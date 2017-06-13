@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import com.reharu.harubase.tools.HLog;
 import com.reharu.ikaros.R;
@@ -16,6 +17,7 @@ public class ShopInfoFragment extends Fragment {
 
     private WebView webView;
     private final String GOODS_INFO_URL = "https://item.taobao.com/item.htm?&id=";
+    private String goodsId;
 
     private View mView;
     private HCortanaActivity cortanaActivity;
@@ -24,18 +26,17 @@ public class ShopInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         if (mView == null) {
-            mView = inflater.inflate(R.layout.activity_shop_info, null);
+            mView = inflater.inflate(R.layout.fragm_web, null);
             cortanaActivity = (HCortanaActivity) getActivity();
+            initUI();
+            initData();
         }
 
         ViewGroup parent = (ViewGroup) mView.getParent();
-        HLog.e("TAG", "parent",parent);
+        HLog.e("TAG", "parent", parent);
         if (parent != null) {
             parent.removeView(mView);
         }
-
-        initUI();
-        initData();
 
         return mView;
     }
@@ -45,19 +46,19 @@ public class ShopInfoFragment extends Fragment {
     }
 
     private void initData() {
-        // 获取Intent中的URL
-//        Intent intent = this.getIntent();
-//        String goodsId = intent.getStringExtra("goodsId");
-        String goodsId = getArguments().getString("goodsId");
+        if (getArguments() != null) {
+            goodsId = getArguments().getString("goodsId");
+        }
         final String queryGoodsInfoURL = GOODS_INFO_URL + goodsId;
+        HLog.d("123", "queryGoodsInfoURL: " + queryGoodsInfoURL);
 
-        webView.loadUrl(queryGoodsInfoURL);
-//        webView.setWebViewClient(new WebViewClient(){
-//            @Override
-//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-//                Log.d("123", "shouldOverrideUrlLoading");
-//                return true;
-//            }
-//        });
+        try {
+            webView.loadUrl(queryGoodsInfoURL);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.setWebViewClient(new WebViewClient());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

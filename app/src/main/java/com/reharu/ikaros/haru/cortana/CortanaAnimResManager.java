@@ -72,12 +72,12 @@ public class CortanaAnimResManager {
         this.cortana = cortana ;
         appera0 = new Animation(CortanaAnimResManager.APPEAR_0);
         normal_blink = new Animation(CortanaAnimResManager.NORMAL_BLINK, 0, -50);
-        happy = new Animation(CortanaAnimResManager.HAPPY, 0, -5);
-        love = new Animation(CortanaAnimResManager.LOVE, 0, -2);
-        jump = new Animation(CortanaAnimResManager.JUMP, 0, -5);
-        rotate =  new Animation(CortanaAnimResManager.ROTATE, -10, -10);
+        happy = new Animation(CortanaAnimResManager.HAPPY, 0, 20);
+        love = new Animation(CortanaAnimResManager.LOVE, 0, 20);
+        jump = new Animation(CortanaAnimResManager.JUMP, 0, 40);
+        rotate =  new Animation(CortanaAnimResManager.ROTATE, -2, 35);
         doubt =  new Animation(CortanaAnimResManager.DOUBT, -0, -50);
-        blink =  new Animation(CortanaAnimResManager.BLINK, -5, -30);
+        blink =  new Animation(CortanaAnimResManager.BLINK, 0, -40);
         //初始化动作列表 方便随机抽取动作
         happySet = new Animation[]{happy, happy, happy, happy,jump,jump, jump, rotate, rotate, love};
         apperaSet = new Animation[]{appera0};

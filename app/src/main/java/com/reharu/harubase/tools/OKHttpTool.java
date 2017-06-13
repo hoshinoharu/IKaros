@@ -1,5 +1,8 @@
 package com.reharu.harubase.tools;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -19,13 +22,16 @@ import okhttp3.Response;
 public class OKHttpTool {
 
     public static abstract class HCallBack<Result> implements Callback {
+
+        private Gson gson = Constant.GSON ;
+
         @Override
         public void onResponse(Call call, Response response) throws IOException {
             try {
                 String json = response.body().string();
                 HLog.e("TAG", json);
                 Type type = ReflectTool.getGenericType(getClass()) ;
-                Result r = Constant.GSON.fromJson(json,type) ;
+                Result r = gson.fromJson(json,type) ;
                 onResponse(call, r);
             } catch (Exception e) {
                 onFail(call, e);
@@ -41,7 +47,9 @@ public class OKHttpTool {
 
         public abstract void onFail(Call call, Exception e);
 
-
+        public void setGsonDateFormat(String pattern){
+            this.gson = new GsonBuilder().setDateFormat(pattern).create() ;
+        }
     }
 
     public static Headers emptyHeaders = new Headers.Builder().build();

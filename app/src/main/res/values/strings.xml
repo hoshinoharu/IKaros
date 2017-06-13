@@ -15,4 +15,5 @@
     <string name="server_error">服务器可能出错了哦</string>
     <string name="action_getCityId">http://imxz.cn/api/getHotelId.php?cityName=</string>
     <string name="tuling_train_resp">http://touch.qunar.com/h5/train/trainList\\?.*?</string>
+    <string name="newApi">http://wangyi.butterfly.mopaasapp.com/news/api</string>
 </resources>
